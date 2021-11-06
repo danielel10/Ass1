@@ -5,4 +5,6 @@
 
 Trainer::Trainer(int t_capacity):capacity(t_capacity){}
 
-//test
+int Trainer::getCapacity() const{
+    return capacity;
+}
