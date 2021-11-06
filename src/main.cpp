@@ -6,7 +6,6 @@ using namespace std;
 Studio* backup = nullptr;
 
 int main(int argc, char** argv){
-    std::cout <<argv[1]<< std::endl;
     if(argc!=2){
         std::cout << "usage: studio <config_path>" << std::endl;
         return 0;
