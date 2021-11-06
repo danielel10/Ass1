@@ -44,9 +44,18 @@ Studio::Studio(const std::string &configFilePath) {
                 getline(s_stream, substr, ',');
                 curr_row.push_back(substr);
             }
-            string name = curr_row[0];
-            string stype = curr_row[1];
-            string sprice = curr_row[2];
+            //---------------need to check whats going on--------------
+            string name;
+            string stype;
+            string sprice;
+            for (int (i) = 0; (i) < curr_row.size(); ++(i)) {
+                if(i==0)
+                    name = curr_row[i];
+                if(i==1)
+                    stype = curr_row[i];
+                if(i==2)
+                    sprice = curr_row[i];
+            }
             WorkoutType type;
             if(stype == "anerobic"){
                 type = ANAEROBIC;
@@ -58,10 +67,9 @@ Studio::Studio(const std::string &configFilePath) {
                 type = CARDIO;
             }
             int price = stoi(sprice);
-            cout <<substr<< endl;
-//            Workout test = new Workout(id,name,price,type);
+            Workout test = new Workout(id,name,price,type);
 //            workout_options.push_back(new Workout(id,name,price,type));
-            id++;
+//            id++;
 
         }
     }
