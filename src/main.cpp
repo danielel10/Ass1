@@ -1,4 +1,4 @@
-#include "/home/talpar/CLionProjects/Ass1/include/Studio.h"
+#include "../include/Studio.h"
 #include <iostream>
 
 using namespace std;
