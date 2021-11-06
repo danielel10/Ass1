@@ -6,7 +6,7 @@ using namespace std;
 
 Studio::Studio(const std::string &configFilePath) {
     //here we define the list of trainers and list of workouts plains
-    fstream newfile;
+    fstream newfilef
     newfile.open(configFilePath,ios::in);
     if (newfile.is_open()){   //checking whether the file is open
         string tp;
