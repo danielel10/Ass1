@@ -3,6 +3,7 @@
 //
 using namespace std;
 #include "../include/Studio.h"
+#include "../include/Workout.h"
 
 
 
@@ -17,7 +18,7 @@ Studio::Studio(const std::string &configFilePath) {
         getline(newfile, tp);
         int NumOfTrainers;
         sscanf(tp.data(), "%d", &NumOfTrainers);
-//        cout << NumOfTrainers << endl;
+  //        cout << NumOfTrainers << endl;
         //parse the second line - trainers capacity
         getline(newfile, tp); //string of the trainers (6,6,4,5) for example
         int n = tp.length();
@@ -27,6 +28,7 @@ Studio::Studio(const std::string &configFilePath) {
             int char_to_num = (Trainers_Capacitys[i] - '0');
             if(char_to_num != -4) {
                 trainers.push_back(new Trainer(char_to_num)); //convert char to int and insert to trainer vectos
+//                cout << char_to_num << endl;
             }
         }
 
@@ -36,7 +38,7 @@ Studio::Studio(const std::string &configFilePath) {
 //        }
         //parse the last line - Workouts
         int id = 0;
-        while(getline(newfile, tp)){
+        while(getline(newfile, tp) && !tp.empty()){
             vector<string> curr_row;
             stringstream s_stream(tp);
             while(s_stream.good()) {
@@ -48,14 +50,20 @@ Studio::Studio(const std::string &configFilePath) {
             string name;
             string stype;
             string sprice;
-            for (int (i) = 0; (i) < curr_row.size(); ++(i)) {
-                if(i==0)
-                    name = curr_row[i];
-                if(i==1)
-                    stype = curr_row[i];
-                if(i==2)
-                    sprice = curr_row[i];
+            for (int i = 0; i < curr_row.size(); i++) {
+                switch(i){
+                    case 0:
+                        name = curr_row[i];
+                        break;
+                    case 1:
+                        stype = curr_row[i];
+                        break;
+                    case 2:
+                        sprice = curr_row[i];
+                        break;
+                }
             }
+            curr_row.empty();
             WorkoutType type;
             if(stype == "Anerobic"){
                 type = WorkoutType::ANAEROBIC;
@@ -67,10 +75,8 @@ Studio::Studio(const std::string &configFilePath) {
                 type = WorkoutType::CARDIO;
             }
             int price = stoi(sprice);
-//            Workout test = new Workout(id,name,price,type);
             workout_options.push_back(Workout(id,name,price,type));
             id++;
-
         }
     }
     newfile.close(); //close the file object.
