@@ -3,4 +3,4 @@ project(Ass1)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Ass1 main.cpp src/Studio.cpp src/Studio.h src/Trainer.cpp src/Workout.cpp)
+add_executable(Ass1 src/main.cpp src/Studio.cpp include/Studio.h src/Trainer.cpp src/Workout.cpp include/Workout.h include/Studio.h)

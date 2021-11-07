@@ -57,10 +57,10 @@ RM = /snap/clion/169/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/talpar/CLionProjects/Ass1
+CMAKE_SOURCE_DIR = /home/daniel/CLionProjects/Ass1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/talpar/CLionProjects/Ass1/cmake-build-debug
+CMAKE_BINARY_DIR = /home/daniel/CLionProjects/Ass1/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/talpar/CLionProjects/Ass1/cmake-build-debug/CMakeFiles /home/talpar/CLionProjects/Ass1/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/CLionProjects/Ass1/cmake-build-debug/CMakeFiles /home/daniel/CLionProjects/Ass1/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/talpar/CLionProjects/Ass1/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/CLionProjects/Ass1/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -129,29 +129,101 @@ Ass1/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/build
 .PHONY : Ass1/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+src/Studio.o: src/Studio.cpp.o
+.PHONY : src/Studio.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/Studio.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Studio.cpp.o
+.PHONY : src/Studio.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+src/Studio.i: src/Studio.cpp.i
+.PHONY : src/Studio.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Studio.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Studio.cpp.i
+.PHONY : src/Studio.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+src/Studio.s: src/Studio.cpp.s
+.PHONY : src/Studio.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Studio.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Studio.cpp.s
+.PHONY : src/Studio.cpp.s
+
+src/Trainer.o: src/Trainer.cpp.o
+.PHONY : src/Trainer.o
+
+# target to build an object file
+src/Trainer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Trainer.cpp.o
+.PHONY : src/Trainer.cpp.o
+
+src/Trainer.i: src/Trainer.cpp.i
+.PHONY : src/Trainer.i
+
+# target to preprocess a source file
+src/Trainer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Trainer.cpp.i
+.PHONY : src/Trainer.cpp.i
+
+src/Trainer.s: src/Trainer.cpp.s
+.PHONY : src/Trainer.s
+
+# target to generate assembly for a file
+src/Trainer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Trainer.cpp.s
+.PHONY : src/Trainer.cpp.s
+
+src/Workout.o: src/Workout.cpp.o
+.PHONY : src/Workout.o
+
+# target to build an object file
+src/Workout.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Workout.cpp.o
+.PHONY : src/Workout.cpp.o
+
+src/Workout.i: src/Workout.cpp.i
+.PHONY : src/Workout.i
+
+# target to preprocess a source file
+src/Workout.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Workout.cpp.i
+.PHONY : src/Workout.cpp.i
+
+src/Workout.s: src/Workout.cpp.s
+.PHONY : src/Workout.s
+
+# target to generate assembly for a file
+src/Workout.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Workout.cpp.s
+.PHONY : src/Workout.cpp.s
+
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -162,9 +234,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Ass1"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... src/Studio.o"
+	@echo "... src/Studio.i"
+	@echo "... src/Studio.s"
+	@echo "... src/Trainer.o"
+	@echo "... src/Trainer.i"
+	@echo "... src/Trainer.s"
+	@echo "... src/Workout.o"
+	@echo "... src/Workout.i"
+	@echo "... src/Workout.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 
