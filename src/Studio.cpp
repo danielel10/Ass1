@@ -18,7 +18,6 @@ Studio::Studio(const std::string &configFilePath) {
         getline(newfile, tp);
         int NumOfTrainers;
         sscanf(tp.data(), "%d", &NumOfTrainers);
-  //        cout << NumOfTrainers << endl;
         //parse the second line - trainers capacity
         getline(newfile, tp); //string of the trainers (6,6,4,5) for example
         int n = tp.length();
@@ -28,7 +27,6 @@ Studio::Studio(const std::string &configFilePath) {
             int char_to_num = (Trainers_Capacitys[i] - '0');
             if(char_to_num != -4) {
                 trainers.push_back(new Trainer(char_to_num)); //convert char to int and insert to trainer vectos
-//                cout << char_to_num << endl;
             }
         }
 
@@ -46,7 +44,6 @@ Studio::Studio(const std::string &configFilePath) {
                 getline(s_stream, substr, ',');
                 curr_row.push_back(substr);
             }
-            //---------------need to check whats going on--------------
             string name;
             string stype;
             string sprice;
@@ -84,5 +81,9 @@ Studio::Studio(const std::string &configFilePath) {
 
 void Studio::start() {
     std::cout <<"Studio is now open!" << std::endl;
+}
+
+int Studio::getNumOfTrainers() const {
+    return  trainers.size();
 }
 
