@@ -75,13 +75,14 @@ Studio::Studio(const std::string &configFilePath) {
                     }
                     curr_row.empty();
                     WorkoutType type;
-                    if(stype == "Anerobic"){
+
+                    if(stype == " Anaerobic"){
                         type = WorkoutType::ANAEROBIC;
                     }
-                    if(stype == "Mixed"){
+                    else if(stype == " Mixed"){
                         type = WorkoutType::MIXED;
                     }
-                    if(stype == "Cardio"){
+                    else if(stype == " Cardio"){
                         type = WorkoutType::CARDIO;
                     }
                     int price = stoi(sprice);
@@ -90,7 +91,7 @@ Studio::Studio(const std::string &configFilePath) {
                 }
 
                 for (int i = 0; i < workout_options.size(); ++i) {
-                    cout << workout_options[i].getName() << endl;
+                    cout << workout_options[i].getType() << endl;
 
                 }
             }
