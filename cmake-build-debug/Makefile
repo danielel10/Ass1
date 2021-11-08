@@ -57,10 +57,10 @@ RM = /snap/clion/169/bin/cmake/linux/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/daniel/CLionProjects/Ass1
+CMAKE_SOURCE_DIR = /home/talpar/CLionProjects/Ass1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/daniel/CLionProjects/Ass1/cmake-build-debug
+CMAKE_BINARY_DIR = /home/talpar/CLionProjects/Ass1/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/CLionProjects/Ass1/cmake-build-debug/CMakeFiles /home/daniel/CLionProjects/Ass1/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/talpar/CLionProjects/Ass1/cmake-build-debug/CMakeFiles /home/talpar/CLionProjects/Ass1/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/daniel/CLionProjects/Ass1/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/talpar/CLionProjects/Ass1/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -128,6 +128,30 @@ Ass1: cmake_check_build_system
 Ass1/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/build
 .PHONY : Ass1/fast
+
+src/Customer.o: src/Customer.cpp.o
+.PHONY : src/Customer.o
+
+# target to build an object file
+src/Customer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Customer.cpp.o
+.PHONY : src/Customer.cpp.o
+
+src/Customer.i: src/Customer.cpp.i
+.PHONY : src/Customer.i
+
+# target to preprocess a source file
+src/Customer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Customer.cpp.i
+.PHONY : src/Customer.cpp.i
+
+src/Customer.s: src/Customer.cpp.s
+.PHONY : src/Customer.s
+
+# target to generate assembly for a file
+src/Customer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ass1.dir/build.make CMakeFiles/Ass1.dir/src/Customer.cpp.s
+.PHONY : src/Customer.cpp.s
 
 src/Studio.o: src/Studio.cpp.o
 .PHONY : src/Studio.o
@@ -234,6 +258,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Ass1"
+	@echo "... src/Customer.o"
+	@echo "... src/Customer.i"
+	@echo "... src/Customer.s"
 	@echo "... src/Studio.o"
 	@echo "... src/Studio.i"
 	@echo "... src/Studio.s"
