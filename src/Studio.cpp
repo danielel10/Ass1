@@ -23,12 +23,10 @@ Studio::Studio(const std::string &configFilePath) {
                 getline(newfile, tp); // We get now the data of number of trainers
                 sscanf(tp.data(), "%d", &NumOfTrainers); // string to int, because we know what is the second line
                 getline(newfile, tp); // We finished with this line and go to the next one
-                cout << NumOfTrainers << endl;
             }
             //#capacity
 
             if(tp == "# Traines") {
-//                cout << tp << endl;
                 getline(newfile, tp); //We get now the data of trainers capacity
                 int n = tp.length();
                 char Trainers_Capacitys[n+1];
@@ -39,15 +37,10 @@ Studio::Studio(const std::string &configFilePath) {
                         trainers.push_back(new Trainer(char_to_num)); //convert char to int and insert to trainer vectos
                     }
                 }
-                for (int i = 0; i < trainers.size(); ++i) {
-                    cout << trainers[i]->getCapacity() << endl;
-
-                }
                 getline(newfile, tp); // We finished with this line and go to the next one
             }
             //#workout
             if(tp == "# Work Options") {
-//                cout << tp.length() << endl;
                 int Workout_id = 0;
                 while(getline(newfile, tp) && !tp.empty()){
                     vector<string> curr_row;
@@ -89,11 +82,6 @@ Studio::Studio(const std::string &configFilePath) {
                     workout_options.push_back(Workout(Workout_id,name,price,type));
                     Workout_id++;
                 }
-
-                for (int i = 0; i < workout_options.size(); ++i) {
-                    cout << workout_options[i].getType() << endl;
-
-                }
             }
             //blank line skip
             getline(newfile, tp);
@@ -105,6 +93,7 @@ Studio::Studio(const std::string &configFilePath) {
             }
 
         }
+
 
     }
 
@@ -118,5 +107,19 @@ void Studio::start() {
 
 int Studio::getNumOfTrainers() const {
     return  trainers.size();
+}
+
+Trainer *Studio::getTrainer(int tid) {
+    return trainers[tid];
+}
+
+//TODO
+
+const std::vector<BaseAction *> &Studio::getActionsLog() const {
+
+}
+
+std::vector<Workout> &Studio::getWorkoutOptions() {
+
 }
 
