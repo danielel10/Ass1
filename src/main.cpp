@@ -1,9 +1,12 @@
 #include "../include/Studio.h"
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
 Studio* backup = nullptr;
+
+
 
 int main(int argc, char** argv){
 //    if(argc!=2){
@@ -12,6 +15,9 @@ int main(int argc, char** argv){
 //    }
     string configurationFile = argv[1];
     Studio studio(configurationFile);
+    HeavyMuscleCustomer c1("baranov", 3);
+//    c1.order(studio.getWorkoutOptions());
+
     /*
     studio.start();
     if(backup!=nullptr){

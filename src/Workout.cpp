@@ -1,6 +1,15 @@
 #include "../include/Workout.h"
 
+//constructor
 Workout::Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type):id(w_id),name(w_name),price(w_price),type(w_type) {}
+
+Workout& Workout::operator=(Workout &other){
+    if (this != &other) {
+
+
+    }
+
+}
 
 int Workout::getId() const {
     return id;
@@ -17,4 +26,7 @@ int Workout::getPrice() const {
 WorkoutType Workout::getType() const {
     return type;
 }
+
+
+
 

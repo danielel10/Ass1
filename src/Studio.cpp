@@ -113,13 +113,14 @@ Trainer *Studio::getTrainer(int tid) {
     return trainers[tid];
 }
 
-//TODO
-
-const std::vector<BaseAction *> &Studio::getActionsLog() const {
+std::vector<Workout> &Studio::getWorkoutOptions() {
+    return workout_options;
 
 }
 
-std::vector<Workout> &Studio::getWorkoutOptions() {
+//TODO
+
+const std::vector<BaseAction *> &Studio::getActionsLog() const {
 
 }
 
