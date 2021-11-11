@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
+#include <utility>
 
 Customer::Customer(std::string c_name, int c_id):name(c_name),id(c_id){}
 
@@ -55,9 +56,6 @@ HeavyMuscleCustomer::HeavyMuscleCustomer(std::string name, int id): Customer(nam
 
 //TODO
 
-//bool compare(const Workout& a, const Workout& b){
-//    return a.getPrice() > b.getPrice();
-//}
 
 std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_options) {
 
@@ -68,29 +66,35 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
         }
     }
 
-//    std::sort(hm_workout.begin(),hm_workout.end(), compare);
-
+    std::vector<std::pair<int,int>> prices_ids;
     for (int i = 0; i < hm_workout.size(); ++i) {
-        for (int j = i; j < hm_workout.size(); ++j) {
-            if (hm_workout[i].getPrice() < hm_workout[j].getPrice()) {
-                Workout tmp = hm_workout[i];
-                hm_workout[i] = hm_workout[j];
-            }
+        prices_ids.push_back(std::make_pair(hm_workout[i].getPrice(),hm_workout[i].getId()));
+    }
+    std::sort(prices_ids.begin(),prices_ids.end());
 
+    //sort ids if price is the same
+    for (int i = 0; i <prices_ids.size() ; ++i) {
+        for (int j = i + 1; j < prices_ids.size() ; ++j) {
+            if(prices_ids[i].first == prices_ids[j].first)
+                if(prices_ids[i].second > prices_ids[j].second) {
+                    std::pair<int,int> tmp = prices_ids[i];
+                    prices_ids[i] = prices_ids[j];
+                    prices_ids[j] = tmp;
+                }
         }
+    }
 
+
+    std::vector<int> final;
+
+    for (int i = prices_ids.size() - 1; i >= 0  ; i--) {
+
+        final.push_back(prices_ids[i].second);
     }
 
 
 
-    std::vector<int> ids;
-    for (int i = 0; i < hm_workout.size(); ++i) {
-        ids.push_back(hm_workout[i].getId());
-    }
-
-
-
-    return ids;
+    return final;
 
 
 }
