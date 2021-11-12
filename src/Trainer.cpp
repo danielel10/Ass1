@@ -8,11 +8,12 @@ int Trainer::getCapacity() const{
     return capacity;
 }
 
+//TODO
 void Trainer::addCustomer(Customer *customer) {
         customersList.push_back(customer);
         capacity--;
 }
-
+//TODO
 void Trainer::removeCustomer(int id) {
     customersList.erase(customersList.begin() + id);
     capacity++;
@@ -28,7 +29,6 @@ std::vector<Customer *> &Trainer::getCustomers() {
     return  customersList;
 
 }
-
 
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {

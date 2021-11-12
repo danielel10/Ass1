@@ -31,26 +31,50 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainer
 }
 
 void OpenTrainer::act(Studio &studio) {
-    if(trainerId > studio.getNumOfTrainers() | studio.getTrainer(trainerId)->isOpen()) {
+    if(trainerId > studio.getNumOfTrainers() || studio.getTrainer(trainerId)->isOpen()) {
+        cout << "Workout session does not exist or is already open." << endl;
         error("Workout session does not exist or is already open.");
     }
     else {
+        studio.getTrainer(trainerId)->openTrainer();
+        for (int i = 0; i < customers.size(); ++i) {
+            studio.getTrainer(trainerId)->addCustomer(customers[i]);
+        }
         complete();
     }
-
 }
 
-//TODO
 
 std::string OpenTrainer::toString() const {
-    if (ActionStatus::COMPLETED) {
-        string msg;
-        for (int i = 0; i < customers.size(); ++i) {
-
-        }
+    string msg;
+    for (int i = 0; i < customers.size(); ++i) {
+        msg = "open " + trainerId + customers[i]->toString() + " ";
+    }
+    if (getStatus() == ActionStatus::COMPLETED) {
+        msg = msg + "Completed";
+        return msg;
+    }
+    else {
+        msg = msg + "Error: " + getErrorMsg();
+        return msg;
     }
 }
 
+Order::Order(int id): trainerId(id){}
+
+void Order::act(Studio &studio) {
+    if(trainerId > studio.getNumOfTrainers() || !studio.getTrainer(trainerId)->isOpen()) {
+        cout << "Trainer does not exist or is not open" << endl;
+        error("Trainer does not exist or is not open");
+    }
+    else {
+
+    }
+}
+
+std::string Order::toString() const {
+
+}
 
 
 

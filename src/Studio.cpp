@@ -118,20 +118,14 @@ std::vector<Workout> &Studio::getWorkoutOptions() {
 
 }
 
-
-void Studio::insert_action(string action) {
-    curr_action = action;
+void Studio::add_action_to_log(BaseAction *toadd) {
+    actionsLog.push_back(toadd);
 }
 
-string Studio::get_action() {
-    return curr_action;
-}
-
-//TODO
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
-
+    return actionsLog;
 }
-
+//TODO
 //void Studio::start() {}
 

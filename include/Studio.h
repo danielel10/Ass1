@@ -22,14 +22,12 @@ public:
     void start();
     int getNumOfTrainers() const;
     Trainer* getTrainer(int tid);
+    void add_action_to_log(BaseAction* toadd);
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
-    void insert_action(string action);
-    string get_action();
 
 private:
     bool open;
-    string curr_action;
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
