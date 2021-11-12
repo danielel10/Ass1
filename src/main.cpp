@@ -15,7 +15,7 @@ int main(int argc, char** argv){
 //    }
     string configurationFile = argv[1];
     Studio studio(configurationFile);
-    HeavyMuscleCustomer c1("baranov", 3);
+    FullBodyCustomer c1("baranov", 3);
     c1.order(studio.getWorkoutOptions());
 
     /*

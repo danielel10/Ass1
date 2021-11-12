@@ -103,4 +103,93 @@ std::string HeavyMuscleCustomer::toString() const {
     return getName() + ',' + "mcl";
 }
 
+FullBodyCustomer::FullBodyCustomer(std::string name, int id): Customer(name,id) {}
+
+
+std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_options) {
+
+    std::vector<Workout> fbC_workout;//cheapest cardio
+    std::vector<Workout> fbM_workout;//most expensive mix
+    std::vector<Workout> fbA_workout; //cheapest anaerobic
+    for (int i = 0; i < workout_options.size(); ++i) {
+        if(workout_options[i].getType() == WorkoutType::CARDIO) {
+            fbC_workout.push_back(workout_options[i]);
+        }
+    }
+
+    for (int i = 0; i < workout_options.size(); ++i) {
+        if(workout_options[i].getType() == WorkoutType::MIXED) {
+            fbM_workout.push_back(workout_options[i]);
+        }
+    }
+
+    for (int i = 0; i < workout_options.size(); ++i) {
+        if(workout_options[i].getType() == WorkoutType::ANAEROBIC) {
+            fbA_workout.push_back(workout_options[i]);
+        }
+    }
+
+    std::vector<std::pair<int,int>> pricesC_ids;
+    for (int i = 0; i < fbC_workout.size(); ++i) {
+        pricesC_ids.push_back(std::make_pair(fbC_workout[i].getPrice(),fbC_workout[i].getId()));
+    }
+    std::vector<std::pair<int,int>> pricesM_ids;
+    for (int i = 0; i < fbM_workout.size(); ++i) {
+        pricesM_ids.push_back(std::make_pair(fbM_workout[i].getPrice(),fbM_workout[i].getId()));
+    }
+    std::vector<std::pair<int,int>> pricesA_ids;
+    for (int i = 0; i < fbA_workout.size(); ++i) {
+        pricesA_ids.push_back(std::make_pair(fbA_workout[i].getPrice(),fbA_workout[i].getId()));
+    }
+    std::sort(pricesC_ids.begin(),pricesC_ids.end());
+    std::sort(pricesM_ids.begin(),pricesM_ids.end());
+    std::sort(pricesA_ids.begin(),pricesA_ids.end());
+
+    //sort ids if price is the same
+    for (int i = 0; i <pricesC_ids.size() ; ++i) {
+        for (int j = i + 1; j < pricesC_ids.size() ; ++j) {
+            if(pricesC_ids[i].first == pricesC_ids[j].first)
+                if(pricesC_ids[i].second > pricesC_ids[j].second) {
+                    std::pair<int,int> tmp = pricesC_ids[i];
+                    pricesC_ids[i] = pricesC_ids[j];
+                    pricesC_ids[j] = tmp;
+                }
+        }
+    }
+    for (int i = 0; i <pricesM_ids.size() ; ++i) {
+        for (int j = i + 1; j < pricesM_ids.size() ; ++j) {
+            if(pricesM_ids[i].first == pricesM_ids[j].first)
+                if(pricesM_ids[i].second > pricesM_ids[j].second) {
+                    std::pair<int,int> tmp = pricesM_ids[i];
+                    pricesM_ids[i] = pricesM_ids[j];
+                    pricesM_ids[j] = tmp;
+                }
+        }
+    }
+    for (int i = 0; i <pricesA_ids.size() ; ++i) {
+        for (int j = i + 1; j < pricesA_ids.size() ; ++j) {
+            if(pricesA_ids[i].first == pricesA_ids[j].first)
+                if(pricesA_ids[i].second > pricesA_ids[j].second) {
+                    std::pair<int,int> tmp = pricesA_ids[i];
+                    pricesA_ids[i] = pricesA_ids[j];
+                    pricesA_ids[j] = tmp;
+                }
+        }
+    }
+
+
+    std::vector<int> final;
+
+    final.push_back(pricesC_ids[0].second);//cheapest cardio
+    final.push_back(pricesM_ids[pricesM_ids.size() -1].second);//most expensive min
+    final.push_back(pricesA_ids[0].second);//cheapest anerobic
+
+    return final;
+
+}
+
+std::string FullBodyCustomer::toString() const {
+    return getName() + ',' + "fbd";
+}
+
 
