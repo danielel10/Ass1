@@ -1,7 +1,7 @@
 all: clean compile link
 
 link:
-	g++ -o bin/main bin/main.o bin/Workout.o bin/Trainer.o bin/Studio.o bin/Customer.o
+	g++ -o bin/studio bin/main.o bin/Workout.o bin/Trainer.o bin/Studio.o bin/Customer.o
 
 compile:
 	g++ -g -Wall -Weffc++ -c -o bin/main.o src/main.cpp

@@ -92,10 +92,7 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_
         final.push_back(prices_ids[i].second);
     }
 
-
-
     return final;
-
 
 }
 

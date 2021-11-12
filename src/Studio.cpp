@@ -1,11 +1,9 @@
-//
-// Created by talpar on 06/11/2021.
-//
-using namespace std;
+
 #include "../include/Studio.h"
 #include "../include/Workout.h"
+#include "../include/Action.h"
 
-
+using namespace std;
 
 
 Studio::Studio(const std::string &configFilePath) {
@@ -101,7 +99,9 @@ Studio::Studio(const std::string &configFilePath) {
 
 }
 
+
 void Studio::start() {
+    open = true;
     std::cout <<"Studio is now open!" << std::endl;
 }
 
@@ -118,9 +118,20 @@ std::vector<Workout> &Studio::getWorkoutOptions() {
 
 }
 
+
+void Studio::insert_action(string action) {
+    curr_action = action;
+}
+
+string Studio::get_action() {
+    return curr_action;
+}
+
 //TODO
 
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
 
 }
+
+//void Studio::start() {}
 
