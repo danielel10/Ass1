@@ -70,6 +70,7 @@ int main(int argc, char** argv){
         }
         //"order" action
         else if (action == "order") {
+            //get the trainer id from the string
             stringstream s_stream(msg);
             vector<string> curr_action;
             while(s_stream.good()) {
@@ -81,6 +82,23 @@ int main(int argc, char** argv){
             Order *ordernew = new Order(trainer_id);
             ordernew->act(studio);
             studio.add_action_to_log(ordernew);
+        }
+        //"move" action
+        else if (action == "move") {
+            //get the trainer details and customer from the string
+            stringstream s_stream(msg);
+            vector<string> curr_action;
+            while(s_stream.good()) {
+                string substr;
+                getline(s_stream, substr, ' ');
+                curr_action.push_back(substr);
+            }
+            int trainer_src = stoi(curr_action[1]);
+            int trainer_dst = stoi(curr_action[2]);
+            int customer_id = stoi(curr_action[3]);
+            MoveCustomer *moveCustomer = new MoveCustomer(trainer_src,trainer_dst,customer_id);
+            moveCustomer->act(studio);
+            studio.add_action_to_log(moveCustomer);
 
         }
     }

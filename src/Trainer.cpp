@@ -21,7 +21,11 @@ void Trainer::removeCustomer(int id) {
 }
 
 Customer *Trainer::getCustomer(int id) {
-    return customersList[id];
+    for (int i = 0; i < customersList.size(); ++i) {
+        if(customersList[i]->getId() == id)
+            return customersList[i];
+    }
+    return nullptr;
 
 }
 
@@ -32,11 +36,14 @@ std::vector<Customer *> &Trainer::getCustomers() {
 
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
-    for (int i = 0; i < workout_options.size(); ++i) {
-        if(workout_options[i].getId() == workout_ids[i] ) {
-            OrderPair trainer_order = std::make_pair(customer_id, workout_options[i]);
-            orderList.push_back(trainer_order);
+    for (int i = 0; i < workout_ids.size(); ++i) {
+        for (int j = 0; j < workout_options.size(); ++j) {
+            if(workout_options[j].getId() == workout_ids[i] ) {
+                OrderPair trainer_order = std::make_pair(customer_id, workout_options[j]);
+                orderList.push_back(trainer_order);
+            }
         }
+
 
     }
 }
@@ -60,8 +67,6 @@ std::vector<OrderPair> &Trainer::getOrders() {
     return orderList;
 }
 
-//TODO
-//???? is it good????
 void Trainer::openTrainer() {
     open = true;
 

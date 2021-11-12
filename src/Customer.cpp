@@ -39,7 +39,7 @@ std::vector<int> CheapCustomer::order(const std::vector<Workout> &workout_option
     int cheapest_workout = workout_options[0].getPrice();
     int cheapest_id = workout_options[0].getId();
     for (int i = workout_options.size() - 1; i >= 0; i--) {
-        if(cheapest_workout < workout_options[i].getPrice()) {
+        if(cheapest_workout > workout_options[i].getPrice()) {
             cheapest_workout = workout_options[i].getPrice();
             cheapest_id = workout_options[i].getId();
         }
@@ -54,8 +54,11 @@ std::string CheapCustomer::toString() const {
 
 HeavyMuscleCustomer::HeavyMuscleCustomer(std::string name, int id): Customer(name,id){}
 
-//TODO
-
+//comparator for prices big to small
+bool compareInterval(std::pair<int,int> i1, std::pair<int,int> i2)
+{
+    return (i1.first > i2.first);
+}
 
 std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout> &workout_options) {
 
