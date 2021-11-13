@@ -99,6 +99,10 @@ Studio::Studio(const std::string &configFilePath) {
 
 }
 
+bool Studio::get_status() {
+    return open;
+}
+
 void Studio::close_studio() {
     open = false;
 }

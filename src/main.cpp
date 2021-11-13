@@ -24,7 +24,7 @@ int main(int argc, char** argv){
 
     // while we dont have close all action we dont close the program
     string msg;
-    while (msg != "close all") {
+    while (studio.get_status()) {
         getline(cin,msg); //here we get the action and the details if needed
         string action = msg.substr(0,msg.find(" ")); // get the first word of the action to know what we need to do.
         //"open trainer" action
@@ -119,6 +119,10 @@ int main(int argc, char** argv){
             CloseAll *close = new CloseAll();
             close->act(studio);
             studio.add_action_to_log(close);
+            studio.close_studio();
+        }
+        else if (action == "workout") {
+
         }
     }
 

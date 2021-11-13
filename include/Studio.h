@@ -19,6 +19,7 @@ class Studio{
 public:
 	Studio();
     Studio(const std::string &configFilePath);
+    bool get_status();
     void close_studio();
     void start();
     int getNumOfTrainers() const;
