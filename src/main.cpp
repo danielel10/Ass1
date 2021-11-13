@@ -101,6 +101,25 @@ int main(int argc, char** argv){
             studio.add_action_to_log(moveCustomer);
 
         }
+        else if (action == "close") {
+            //get the trainer details and customer from the string
+            stringstream s_stream(msg);
+            vector<string> curr_action;
+            while(s_stream.good()) {
+                string substr;
+                getline(s_stream, substr, ' ');
+                curr_action.push_back(substr);
+            }
+            int trainer_id = stoi(curr_action[1]);
+            Close *close = new Close(trainer_id);
+            close->act(studio);
+            studio.add_action_to_log(close);
+        }
+        else if (action == "closeall") {
+            CloseAll *close = new CloseAll();
+            close->act(studio);
+            studio.add_action_to_log(close);
+        }
     }
 
     /*

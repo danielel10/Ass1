@@ -15,7 +15,10 @@ void Trainer::addCustomer(Customer *customer) {
 }
 //TODO
 void Trainer::removeCustomer(int id) {
-    customersList.erase(customersList.begin() + id);
+    for (int i = 0; i < customersList.size(); ++i) {
+        if (customersList[i]->getId() == id)
+            customersList.erase(customersList.begin() + i);
+    }
     capacity++;
 
 }
@@ -49,7 +52,6 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids, c
 }
 
 int Trainer::getSalary() {
-    int salary;
     for (int i = 0; i < orderList.size(); ++i) {
         salary = salary + orderList[i].second.getPrice();
     }
@@ -58,7 +60,10 @@ int Trainer::getSalary() {
 }
 
 bool Trainer::isOpen() {
-    return open;
+    if(open == true)
+        return true;
+    else
+        return false;
 
 }
 

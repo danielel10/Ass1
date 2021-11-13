@@ -23,6 +23,7 @@ public:
     bool isOpen();
 
 private:
+    int salary;
     int capacity;
     bool open;
     std::vector<Customer*> customersList;
