@@ -121,8 +121,29 @@ int main(int argc, char** argv){
             studio.add_action_to_log(close);
             studio.close_studio();
         }
-        else if (action == "workout") {
-
+        else if (action == "workout_options") {
+            PrintWorkoutOptions *workoutOptions = new PrintWorkoutOptions();
+            workoutOptions->act(studio);
+            studio.add_action_to_log(workoutOptions);
+        }
+        else if (action == "status") {
+            //get the trainer details and customer from the string
+            stringstream s_stream(msg);
+            vector<string> curr_action;
+            while(s_stream.good()) {
+                string substr;
+                getline(s_stream, substr, ' ');
+                curr_action.push_back(substr);
+            }
+            int trainer_id = stoi(curr_action[1]);
+            PrintTrainerStatus *status = new PrintTrainerStatus(trainer_id);
+            status->act(studio);
+            studio.add_action_to_log(status);
+        }
+        else if (action == "log") {
+            PrintActionsLog *log = new PrintActionsLog();
+            log->act(studio);
+            studio.add_action_to_log(log);
         }
     }
 

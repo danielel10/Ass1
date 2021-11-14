@@ -41,13 +41,6 @@ void OpenTrainer::act(Studio &studio) {
         for (int i = 0; i < customers.size(); ++i) {
             studio.getTrainer(trainerId)->addCustomer(customers[i]);
         }
-
-        for (int i = 0; i < studio.getTrainer(trainerId)->getCustomers().size(); ++i) {
-            //each customer get the ids of workouts he get
-            vector<int> workout_ids = studio.getTrainer(trainerId)->getCustomers()[i]->order(studio.getWorkoutOptions());
-            int id = studio.getTrainer(trainerId)->getCustomers()[i]->getId();
-            studio.getTrainer(trainerId)->order(id,workout_ids,studio.getWorkoutOptions());
-        }
         complete();
     }
 }
@@ -78,14 +71,26 @@ void Order::act(Studio &studio) {
         error("Trainer does not exist or is not open");
     }
     else {
+        studio.getTrainer(trainerId)->setCurrSalary(0); //we set val to 0 and calculate all the salary again
+        studio.getTrainer(trainerId)->getOrders().clear();
+        for (int i = 0; i < studio.getTrainer(trainerId)->getCustomers().size(); ++i) {
+            //each customer get the ids of workouts he get
+            vector<int> workout_ids = studio.getTrainer(trainerId)->getCustomers()[i]->order(studio.getWorkoutOptions());
+            int id = studio.getTrainer(trainerId)->getCustomers()[i]->getId();
+            studio.getTrainer(trainerId)->order(id,workout_ids,studio.getWorkoutOptions());
+        }
+        int curr_salary = 0;
         for (int i = 0; i < studio.getTrainer(trainerId)->getOrders().size(); ++i) {
+            curr_salary = curr_salary + studio.getTrainer(trainerId)->getOrders()[i].second.getPrice();
             int id = studio.getTrainer(trainerId)->getOrders()[i].first; //get the id of the customer
             string name = studio.getTrainer(trainerId)->getCustomer(id)->getName();
             Workout workout = studio.getTrainer(trainerId)->getOrders()[i].second;
             string workout_name = workout.getName();
             cout << name + " " + "Is " + "Doing " + workout_name + "\n";
         }
+        studio.getTrainer(trainerId)->setCurrSalary(curr_salary);
     }
+    complete();
 }
 
 std::string Order::toString() const {
@@ -112,6 +117,7 @@ void MoveCustomer::act(Studio &studio) {
         cout << "Cannot move customer" << endl;
         error("Cannot move customer");
     }
+    //TODO - answer question
     else {
         Customer *tmp = studio.getTrainer(srcTrainer)->getCustomer(id); //we get the customer before we delete it
         studio.getTrainer(srcTrainer)->removeCustomer(id);
@@ -155,19 +161,13 @@ void Close::act(Studio &studio) {
         error("Trainer does not exist or is not open");
     }
     else {
-        int salary = studio.getTrainer(trainerId)->getSalary();
-        int size = studio.getTrainer(trainerId)->getCustomers().size();
-        vector<int> customers_ids;
-        for (int i = 0; i < size; ++i) {
-            customers_ids.push_back(studio.getTrainer(trainerId)->getCustomer(i)->getId());
-        }
-        for (int i = 0; i < customers_ids.size(); ++i) {
-            studio.getTrainer(trainerId)->removeCustomer(i);
-        }
-        studio.getTrainer(trainerId)->getOrders().clear();
+        studio.getTrainer(trainerId)->setTotalSalary(studio.getTrainer(trainerId)->getTotalSalary() + studio.getTrainer(trainerId)->getCurrSalary());
+        studio.getTrainer(trainerId)->setCurrSalary(0);
+        int salary = studio.getTrainer(trainerId)->getTotalSalary();
         studio.getTrainer(trainerId)->closeTrainer();
-        cout << "Trainer " + to_string((trainerId)) + " closed. " + "Salary " + to_string(studio.getTrainer(salary)->getSalary());
+        cout << "Trainer " + to_string((trainerId)) + " closed. " + "Salary " + to_string(salary) + "NIS" + "\n";
     }
+    complete();
 
 }
 
@@ -183,29 +183,18 @@ std::string Close::toString() const {
     }
 }
 
-//TODO - need to debug the error
 CloseAll::CloseAll() {}
 
 void CloseAll::act(Studio &studio) {
     for (int trainerId = 0; trainerId < studio.getNumOfTrainers(); ++trainerId) {
         if(studio.getTrainer(trainerId)->isOpen()) {
-            int salary = studio.getTrainer(trainerId)->getSalary();
-//            int size = studio.getTrainer(trainerId)->getCustomers().size();
-//            vector<int> customers_ids;
-//            for (int i = 0; i < size; ++i) {
-//                customers_ids.push_back(studio.getTrainer(trainerId)->getCustomer(i)->getId());
-//            }
-//            for (int i = 0; i < customers_ids.size(); ++i) {
-//                studio.getTrainer(trainerId)->removeCustomer(i);
-//            }
-//            studio.getTrainer(trainerId)->getOrders().clear();
-//            studio.getTrainer(trainerId)->closeTrainer();
+            studio.getTrainer(trainerId)->setTotalSalary(studio.getTrainer(trainerId)->getTotalSalary() + studio.getTrainer(trainerId)->getCurrSalary());
+            studio.getTrainer(trainerId)->setCurrSalary(0);
+            int salary = studio.getTrainer(trainerId)->getTotalSalary();
             cout << "Trainer " + to_string((trainerId)) + " closed. " + "Salary " + to_string(salary) + "NIS";
         }
     }
     studio.close_studio();
-
-
 }
 
 std::string CloseAll::toString() const {
@@ -219,11 +208,61 @@ void PrintWorkoutOptions::act(Studio &studio) {
         cout << studio.getWorkoutOptions()[i].getName() + ", " + to_string(studio.getWorkoutOptions()[i].getType()) +  ", "
         + to_string(studio.getWorkoutOptions()[i].getPrice()) + "\n";
     }
+    complete();
 }
 
 std::string PrintWorkoutOptions::toString() const {
-    return "workout_options";
+    return ("workout_options Completed");
 }
+
+
+PrintTrainerStatus::PrintTrainerStatus(int id):trainerId(id) {}
+
+void PrintTrainerStatus::act(Studio &studio) {
+    if (!studio.getTrainer(trainerId)->isOpen()) {
+        cout << "Trainer " + to_string(trainerId) + " status: " + studio.getTrainer(trainerId)->get_status();
+
+    }
+     else {
+        string msg = "Trainer " + to_string(trainerId) + " status: " + studio.getTrainer(trainerId)->get_status() + "\n" + "Customers:" + "\n";
+        string customer_detials;
+        for (int i = 0; i < studio.getTrainer(trainerId)->getCustomers().size(); ++i) {
+            customer_detials = customer_detials +
+                               to_string(studio.getTrainer(trainerId)->getCustomer(i)->getId()) + " " +
+                               studio.getTrainer(trainerId)->getCustomer(i)->getName() + "\n";
+        }
+        string order_det;
+        for (int i = 0; i < studio.getTrainer(trainerId)->getOrders().size(); ++i) {
+            order_det = order_det + studio.getTrainer(trainerId)->getOrders()[i].second.getName() + " " +
+                        to_string(studio.getTrainer(trainerId)->getOrders()[i].second.getPrice()) + "NIS" + " " +
+                        to_string(studio.getTrainer(trainerId)->getOrders()[i].first) + "\n";
+        }
+        int salary = studio.getTrainer(trainerId)->getTotalSalary() + studio.getTrainer(trainerId)->getCurrSalary();
+        cout << msg + customer_detials + "Orders:\n" + order_det + "Current Trainer's Salary: " + to_string(salary) + "NIS" + "\n";
+     }
+
+    complete();
+}
+
+std::string PrintTrainerStatus::toString() const {
+    return "status " + to_string(trainerId) + " Completed";
+}
+
+PrintActionsLog::PrintActionsLog() {}
+
+void PrintActionsLog::act(Studio &studio) {
+    for (int i = 0; i < studio.getActionsLog().size(); ++i) {
+        cout << studio.getActionsLog()[i]->toString() + "\n";
+    }
+     complete();
+}
+
+std::string PrintActionsLog::toString() const {
+    return "log Completed";
+}
+
+
+
 
 
 

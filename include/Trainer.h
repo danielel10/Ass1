@@ -19,11 +19,22 @@ public:
     void order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout>& workout_options);
     void openTrainer();
     void closeTrainer();
-    int getSalary();
+    int getTotalSalary();
+    int getCurrSalary();
+    void setCurrSalary(int sal);
+    void setTotalSalary(int total);
     bool isOpen();
+    std::string get_status();
+    ~Trainer();
+    Trainer(const Trainer &other);
+    Trainer(Trainer &&other);
+    Trainer& operator=(const Trainer &other);
+    Trainer& operator=(Trainer &&other);
+    void clear();
 
 private:
-    int salary;
+    int salary; //this is the total salary
+    int curr_salary;
     int capacity;
     bool open;
     std::vector<Customer*> customersList;

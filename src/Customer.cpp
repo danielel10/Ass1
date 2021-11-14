@@ -15,6 +15,16 @@ int Customer::getId() const {
     return id;
 }
 
+//TODO - check for trainer rule of 5
+//std::string Customer::get_workout_type() {
+//    return workout_type;
+//
+//}
+//
+//void Customer::set_workout_type(std::string type) {
+//    workout_type = type;
+//}
+
 
 SweatyCustomer::SweatyCustomer(std::string name, int id): Customer(name,id){}
 
@@ -191,5 +201,6 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 std::string FullBodyCustomer::toString() const {
     return getName() + ',' + "fbd";
 }
+
 
 

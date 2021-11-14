@@ -10,11 +10,15 @@ public:
     Customer(std::string c_name, int c_id);
     virtual std::vector<int> order(const std::vector<Workout> &workout_options)=0;
     virtual std::string toString() const = 0;
+    void set_workout_type(std::string type);
     std::string getName() const;
+    std::string get_workout_type();
     int getId() const;
 private:
     const std::string name;
     const int id;
+    //TODO - refactor trainer
+//    std::string workout_type;
 };
 
 
