@@ -91,6 +91,7 @@ void Order::act(Studio &studio) {
         studio.getTrainer(trainerId)->setCurrSalary(curr_salary);
     }
     complete();
+
 }
 
 std::string Order::toString() const {
