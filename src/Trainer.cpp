@@ -56,7 +56,7 @@ void Trainer::setCurrSalary(int sal) {
 }
 
 void Trainer::setTotalSalary(int total) {
-    salary = salary +total;
+    salary = total;
 }
 
 int Trainer::getTotalSalary() {
