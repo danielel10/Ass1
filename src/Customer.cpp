@@ -25,6 +25,31 @@ int Customer::getId() const {
 //    workout_type = type;
 //}
 
+//Copy constructors
+Customer::Customer(const Customer &other):id(other.id),name(other.name) {}
+
+SweatyCustomer::SweatyCustomer(const SweatyCustomer &other): Customer(other) {}
+
+CheapCustomer::CheapCustomer(const CheapCustomer &other): Customer(other) {}
+
+HeavyMuscleCustomer::HeavyMuscleCustomer(const HeavyMuscleCustomer &other): Customer(other) {}
+
+FullBodyCustomer::FullBodyCustomer(const FullBodyCustomer &other): Customer(other) {}
+
+//move constructors
+Customer::Customer(Customer &&other):id(other.id),name(other.name) {}
+
+SweatyCustomer::SweatyCustomer(SweatyCustomer &&other): Customer(other) {}
+
+CheapCustomer::CheapCustomer(CheapCustomer &&other): Customer(other) {}
+
+HeavyMuscleCustomer::HeavyMuscleCustomer(HeavyMuscleCustomer &&other): Customer(other) {}
+
+FullBodyCustomer::FullBodyCustomer(FullBodyCustomer &&other): Customer(other) {}
+
+
+
+
 
 SweatyCustomer::SweatyCustomer(std::string name, int id): Customer(name,id){}
 
@@ -201,6 +226,8 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout> &workout_opt
 std::string FullBodyCustomer::toString() const {
     return getName() + ',' + "fbd";
 }
+
+
 
 
 

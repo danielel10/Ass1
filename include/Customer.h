@@ -14,6 +14,11 @@ public:
     std::string getName() const;
     std::string get_workout_type();
     int getId() const;
+    //TODO - check if I need to implement that
+    Customer(const Customer &other);
+    Customer(Customer &&other);
+//    Customer& operator=(const Customer &other);
+//    Customer& operator=(Customer &&other);
 private:
     const std::string name;
     const int id;
@@ -27,6 +32,8 @@ public:
 	SweatyCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
+    SweatyCustomer(const SweatyCustomer &other);
+    SweatyCustomer(SweatyCustomer &&other);
 private:
 };
 
@@ -36,6 +43,8 @@ public:
 	CheapCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
+    CheapCustomer(const CheapCustomer &other);
+    CheapCustomer(CheapCustomer &&other);
 private:
 };
 
@@ -45,6 +54,8 @@ public:
 	HeavyMuscleCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
+    HeavyMuscleCustomer(const HeavyMuscleCustomer &other);
+    HeavyMuscleCustomer(HeavyMuscleCustomer &&other);
 private:
 };
 
@@ -54,6 +65,8 @@ public:
 	FullBodyCustomer(std::string name, int id);
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
+    FullBodyCustomer(const FullBodyCustomer &other);
+    FullBodyCustomer(FullBodyCustomer &&other);
 private:
 };
 

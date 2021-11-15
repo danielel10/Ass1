@@ -67,6 +67,7 @@ int main(int argc, char** argv){
             //run the action
             open_trainer->act(studio);
             studio.add_action_to_log(open_trainer);
+            delete open_trainer;
         }
         //"order" action
         else if (action == "order") {
@@ -82,6 +83,7 @@ int main(int argc, char** argv){
             Order *ordernew = new Order(trainer_id);
             ordernew->act(studio);
             studio.add_action_to_log(ordernew);
+            delete ordernew;
         }
         //"move" action
         else if (action == "move") {
@@ -99,6 +101,7 @@ int main(int argc, char** argv){
             MoveCustomer *moveCustomer = new MoveCustomer(trainer_src,trainer_dst,customer_id);
             moveCustomer->act(studio);
             studio.add_action_to_log(moveCustomer);
+            delete moveCustomer;
 
         }
         else if (action == "close") {
@@ -114,17 +117,20 @@ int main(int argc, char** argv){
             Close *close = new Close(trainer_id);
             close->act(studio);
             studio.add_action_to_log(close);
+            delete close;
         }
         else if (action == "closeall") {
             CloseAll *close = new CloseAll();
             close->act(studio);
             studio.add_action_to_log(close);
             studio.close_studio();
+            delete close;
         }
         else if (action == "workout_options") {
             PrintWorkoutOptions *workoutOptions = new PrintWorkoutOptions();
             workoutOptions->act(studio);
             studio.add_action_to_log(workoutOptions);
+            delete workoutOptions;
         }
         else if (action == "status") {
             //get the trainer details and customer from the string
@@ -139,11 +145,13 @@ int main(int argc, char** argv){
             PrintTrainerStatus *status = new PrintTrainerStatus(trainer_id);
             status->act(studio);
             studio.add_action_to_log(status);
+            delete status;
         }
         else if (action == "log") {
             PrintActionsLog *log = new PrintActionsLog();
             log->act(studio);
             studio.add_action_to_log(log);
+            delete log;
         }
     }
 

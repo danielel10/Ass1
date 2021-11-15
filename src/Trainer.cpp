@@ -97,58 +97,52 @@ std::string Trainer::get_status() {
 
 //destructor
 Trainer::~Trainer() {
-    for (Customer *c: customersList) {
-        delete c;
-    }
+    customersList.clear();
 }
 
 //TODO - create copy constructor for customer;
 //copy constructor
-//Trainer::Trainer(const Trainer &other) {
-//    salary = other.salary;
-//    capacity = other.capacity;
-//    open = other.open;
-//    for (OrderPair p: other.orderList) {
-//        orderList.push_back(p);
-//    }
-//    for (Customer *c: other.customersList) {
-//        if(c->get_workout_type() == "swt"){
-//            customersList.push_back(new SweatyCustomer(*c)); //check in compile
-//        }
-//
-//    }
-//}
+Trainer::Trainer(const Trainer &other):salary(other.salary), capacity(other.capacity), open(other.open),curr_salary(other.curr_salary) {
+    for (OrderPair p: other.orderList) {
+        orderList.push_back(p);
+    }
+    for (Customer *c: other.customersList) {
+        customersList.push_back(c);
+    }
+}
 //TODO - fix for each loop!
 //move constructor
-//Trainer::Trainer(Trainer &&other) {
-//    salary = other.salary;
-//    capacity = other.capacity;
-//    open = other.open;
-//    for (OrderPair p: other.orderList) {
-//        orderList.push_back(p);
-//    }
-//    for (Customer *c: other.customersList) {
-//        customersList.push_back(c); //check in compile
-//        c = nullptr;
-//    }
-//}
+Trainer::Trainer(Trainer &&other) {
+    salary = other.salary;
+    capacity = other.capacity;
+    open = other.open;
+    curr_salary = other.curr_salary;
+    for (OrderPair p: other.orderList) {
+        orderList.push_back(p);
+    }
+    for (Customer *c: other.customersList) {
+        customersList.push_back(c);
+    }
+    other.customersList.clear();
+
+}
 
 //copy assignment
-//Trainer& Trainer:: operator=(const Trainer &other) {
-//    if(this != &other){
-//        clear(); //here we delete ourself before getting the values
-//        salary = other.salary;
-//        capacity = other.capacity;
-//        open = other.open;
-//        for (OrderPair p: other.orderList) {
-//            orderList.push_back(p);
-//        }
-//        for (Customer *c: other.customersList) {
-//            customersList.push_back(new Customer(*c)); //check in compile
-//        }
-//    }
-//    return *this;
-//}
+Trainer& Trainer:: operator=(const Trainer &other) {
+    if(this != &other){
+        clear(); //here we delete ourself before getting the values
+        salary = other.salary;
+        capacity = other.capacity;
+        open = other.open;
+        for (OrderPair p: other.orderList) {
+            orderList.push_back(p);
+        }
+        for (Customer *c: other.customersList) {
+            customersList.push_back(new Customer(*c)); //check in compile
+        }
+    }
+    return *this;
+}
 //TODO - check c null pointer!
 //Move assignment
 //Trainer &Trainer:: operator=(Trainer &&other) {
@@ -168,12 +162,11 @@ Trainer::~Trainer() {
 //    return *this;
 //}
 //TODO - create rulle of 5 to customer
-//void Trainer::clear() {
-//    salary = 0;
-//    capacity = 0;
-//    open = false;
-//    orderList.clear();
-//    for (Customer *c: customersList) {
-//        delete c;
-//    }
-//}
+void Trainer::clear() {
+    salary = 0;
+    curr_salary = 0;
+    capacity = 0;
+    open = false;
+    orderList.clear();
+    customersList.clear();
+}
