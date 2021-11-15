@@ -134,4 +134,78 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
     return actionsLog;
 }
 
+//destructor
+Studio::~Studio() {
+    trainers.clear();
+    actionsLog.clear();
+}
+
+//copy constructor
+Studio::Studio(const Studio &other):open(other.open), workout_options(other.workout_options) {
+    for (Trainer *t: other.trainers) {
+        trainers.push_back(t);
+    }
+    for (BaseAction *log : other.actionsLog) {
+        actionsLog.push_back(log);
+    }
+}
+
+//move constructor
+Studio::Studio(Studio &&other) {
+    open = other.open;
+    for (Workout w: other.workout_options) {
+        workout_options.push_back(w);
+    }
+    for (Trainer *t: other.trainers) {
+        trainers.push_back(t);
+    }
+    for (BaseAction *log : other.actionsLog) {
+        actionsLog.push_back(log);
+    }
+}
+
+//copy assignment
+Studio &Studio::operator=(const Studio &other) {
+    if (this != &other) {
+        clear();
+        open = other.open;
+        for (Workout w: other.workout_options) {
+            workout_options.push_back(w);
+        }
+        for (Trainer *t: other.trainers) {
+            trainers.push_back(t);
+        }
+        for (BaseAction *log : other.actionsLog) {
+            actionsLog.push_back(log);
+        }
+
+    }
+    return *this;
+}
+
+//move assignment
+Studio &Studio::operator=(Studio &&other) {
+    if(this != &other) {
+        clear();
+        open = other.open;
+        for (Workout w: other.workout_options) {
+            workout_options.push_back(w);
+        }
+        for (Trainer *t: other.trainers) {
+            trainers.push_back(t);
+        }
+        for (BaseAction *log : other.actionsLog) {
+            actionsLog.push_back(log);
+        }
+        other.trainers.clear();
+        other.actionsLog.clear();
+    }
+    return *this;
+}
+
+void Studio::clear() {
+    trainers.clear();
+    actionsLog.clear();
+}
+
 

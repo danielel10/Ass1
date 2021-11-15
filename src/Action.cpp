@@ -1,5 +1,6 @@
 #include "../include/Action.h"
 #include "../include/Studio.h"
+extern Studio* backup;
 
 BaseAction::BaseAction() {
 
@@ -268,6 +269,41 @@ void PrintActionsLog::act(Studio &studio) {
 
 std::string PrintActionsLog::toString() const {
     return "log Completed";
+}
+
+BackupStudio::BackupStudio() {}
+
+void BackupStudio::act(Studio &studio) {
+    backup = &studio;
+    complete();
+}
+
+std::string BackupStudio::toString() const {
+    return "backup Completed";
+}
+
+RestoreStudio::RestoreStudio() {}
+
+void RestoreStudio::act(Studio &studio) {
+    if(backup) {
+        studio = backup;
+        complete();
+    }
+    else {
+        cout << "No backup available";
+        error("No backup available");
+    }
+}
+
+std::string RestoreStudio::toString() const {
+    string msg = "restore ";
+    if( getStatus() == ActionStatus::COMPLETED) {
+        msg = msg + "Completed";
+    }
+    else {
+        msg = msg + "Error: " + getErrorMsg();
+    }
+    return msg;
 }
 
 

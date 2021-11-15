@@ -97,10 +97,10 @@ std::string Trainer::get_status() {
 
 //destructor
 Trainer::~Trainer() {
-    customersList.clear();
+    if(!customersList.empty())
+        customersList.clear();
 }
 
-//TODO - create copy constructor for customer;
 //copy constructor
 Trainer::Trainer(const Trainer &other):salary(other.salary), capacity(other.capacity), open(other.open),curr_salary(other.curr_salary) {
     for (OrderPair p: other.orderList) {
@@ -110,7 +110,6 @@ Trainer::Trainer(const Trainer &other):salary(other.salary), capacity(other.capa
         customersList.push_back(c);
     }
 }
-//TODO - fix for each loop!
 //move constructor
 Trainer::Trainer(Trainer &&other) {
     salary = other.salary;
@@ -130,6 +129,23 @@ Trainer::Trainer(Trainer &&other) {
 //copy assignment
 Trainer& Trainer:: operator=(const Trainer &other) {
     if(this != &other){
+        clear(); //here we delete ourselves before getting the values
+        salary = other.salary;
+        capacity = other.capacity;
+        open = other.open;
+        for (OrderPair p: other.orderList) {
+            orderList.push_back(p);
+        }
+        for (Customer *c: other.customersList) {
+            customersList.push_back(c);
+        }
+    }
+    return *this;
+}
+//TODO - check c null pointer!
+//Move assignment
+Trainer &Trainer:: operator=(Trainer &&other) {
+    if(this != &other){
         clear(); //here we delete ourself before getting the values
         salary = other.salary;
         capacity = other.capacity;
@@ -138,29 +154,12 @@ Trainer& Trainer:: operator=(const Trainer &other) {
             orderList.push_back(p);
         }
         for (Customer *c: other.customersList) {
-            customersList.push_back(new Customer(*c)); //check in compile
+            customersList.push_back(c);
         }
+        other.customersList.clear();
     }
     return *this;
 }
-//TODO - check c null pointer!
-//Move assignment
-//Trainer &Trainer:: operator=(Trainer &&other) {
-//    if(this != &other){
-//        clear(); //here we delete ourself before getting the values
-//        salary = other.salary;
-//        this.capacity = other.capacity;
-//        open = other.open;
-//        for (OrderPair p: other.orderList) {
-//            orderList.push_back(p);
-//        }
-//        for (Customer *c: other.customersList) {
-//            customersList.push_back(c); //check in compile
-//            c = nullptr;
-//        }
-//    }
-//    return *this;
-//}
 //TODO - create rulle of 5 to customer
 void Trainer::clear() {
     salary = 0;
