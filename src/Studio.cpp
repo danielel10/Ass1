@@ -133,6 +133,5 @@ void Studio::add_action_to_log(BaseAction *toadd) {
 const std::vector<BaseAction *> &Studio::getActionsLog() const {
     return actionsLog;
 }
-//TODO
-//void Studio::start() {}
+
 

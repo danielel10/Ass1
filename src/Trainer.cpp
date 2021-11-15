@@ -8,12 +8,10 @@ int Trainer::getCapacity() const{
     return capacity;
 }
 
-//TODO
 void Trainer::addCustomer(Customer *customer) {
         customersList.push_back(customer);
         capacity--;
 }
-//TODO
 void Trainer::removeCustomer(int id) {
     for (int i = 0; i < customersList.size(); ++i) {
         if (customersList[i]->getId() == id)
