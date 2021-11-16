@@ -143,7 +143,7 @@ Studio::~Studio() {
 //copy constructor
 Studio::Studio(const Studio &other):open(other.open), workout_options(other.workout_options) {
     for (Trainer *t: other.trainers) {
-        trainers.push_back(t);
+        trainers.push_back(new Trainer(*t));
     }
     for (BaseAction *log : other.actionsLog) {
         actionsLog.push_back(log);
@@ -157,7 +157,7 @@ Studio::Studio(Studio &&other) {
         workout_options.push_back(w);
     }
     for (Trainer *t: other.trainers) {
-        trainers.push_back(t);
+        trainers.push_back(new Trainer(*t));
     }
     for (BaseAction *log : other.actionsLog) {
         actionsLog.push_back(log);
@@ -173,7 +173,7 @@ Studio &Studio::operator=(const Studio &other) {
             workout_options.push_back(w);
         }
         for (Trainer *t: other.trainers) {
-            trainers.push_back(t);
+            trainers.push_back(new Trainer(*t));
         }
         for (BaseAction *log : other.actionsLog) {
             actionsLog.push_back(log);
@@ -192,7 +192,7 @@ Studio &Studio::operator=(Studio &&other) {
             workout_options.push_back(w);
         }
         for (Trainer *t: other.trainers) {
-            trainers.push_back(t);
+            trainers.push_back(new Trainer(*t));
         }
         for (BaseAction *log : other.actionsLog) {
             actionsLog.push_back(log);
@@ -204,6 +204,7 @@ Studio &Studio::operator=(Studio &&other) {
 }
 
 void Studio::clear() {
+    workout_options.clear();
     trainers.clear();
     actionsLog.clear();
 }

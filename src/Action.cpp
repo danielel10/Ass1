@@ -1,6 +1,6 @@
 #include "../include/Action.h"
 #include "../include/Studio.h"
-extern Studio* backup;
+extern Studio backup;
 
 BaseAction::BaseAction() {
 
@@ -88,7 +88,7 @@ void Order::act(Studio &studio) {
             string workout_name = workout.getName();
             cout << name + " " + "Is " + "Doing " + workout_name + "\n";
         }
-        studio.getTrainer(trainerId)->setCurrSalary(curr_salary - studio.getTrainer(trainerId)->getTotalSalary()); // we calculated already the others that are in the order vector so we remove them
+        studio.getTrainer(trainerId)->setCurrSalary(curr_salary); // we calculated already the others that are in the order vector so we remove them
         complete();
     }
 }
@@ -132,13 +132,17 @@ void MoveCustomer::act(Studio &studio) {
         }
         //here we add the trainer and add it to the order of dest_trainer.
         studio.getTrainer(dstTrainer)->addCustomer(tmp);
-        for (int i = 0; i < studio.getTrainer(dstTrainer)->getOrders().size(); ++i) {
-            if (studio.getTrainer(dstTrainer)->getOrders()[i].first == id)
-                studio.getTrainer(dstTrainer)->setCurrSalary(studio.getTrainer(srcTrainer)->getCurrSalary() + studio.getTrainer(srcTrainer)->getOrders()[i].second.getPrice());
-        }
         vector<int> workout_ids = studio.getTrainer(dstTrainer)->getCustomers().back()->order(studio.getWorkoutOptions());
         int id = studio.getTrainer(dstTrainer)->getCustomers().back()->getId();
         studio.getTrainer(dstTrainer)->order(id,workout_ids,studio.getWorkoutOptions());
+        for (int i = 0; i < studio.getTrainer(dstTrainer)->getOrders().size(); ++i) {
+            if (studio.getTrainer(dstTrainer)->getOrders()[i].first == id) {
+                int priceinc = studio.getTrainer(dstTrainer)->getOrders()[i].second.getPrice();
+                int currpice = studio.getTrainer(dstTrainer)->getCurrSalary();
+                studio.getTrainer(dstTrainer)->setCurrSalary(priceinc + currpice);
+            }
+
+        }
         if (studio.getTrainer(srcTrainer)->getCustomers().size() == 0) {
             studio.getTrainer(srcTrainer)->closeTrainer();
         }
@@ -274,7 +278,7 @@ std::string PrintActionsLog::toString() const {
 BackupStudio::BackupStudio() {}
 
 void BackupStudio::act(Studio &studio) {
-    backup = &studio;
+    backup = studio;
     complete();
 }
 
@@ -285,7 +289,7 @@ std::string BackupStudio::toString() const {
 RestoreStudio::RestoreStudio() {}
 
 void RestoreStudio::act(Studio &studio) {
-    if(backup) {
+    if(backup.get_status()) {
         studio = backup;
         complete();
     }
