@@ -5,6 +5,12 @@
 
 using namespace std;
 
+Studio::Studio() {
+    open;
+    trainers;
+    workout_options;
+    actionsLog;
+}
 
 Studio::Studio(const std::string &configFilePath) {
     //here we define the list of trainers and list of workouts plains
@@ -103,6 +109,10 @@ bool Studio::get_status() {
     return open;
 }
 
+void Studio::setStatus() {
+    open = true;
+}
+
 void Studio::close_studio() {
     open = false;
 }
@@ -118,6 +128,10 @@ int Studio::getNumOfTrainers() const {
 
 Trainer *Studio::getTrainer(int tid) {
     return trainers[tid];
+}
+
+vector<Trainer *> &Studio::getTrainers() {
+    return trainers;
 }
 
 std::vector<Workout> &Studio::getWorkoutOptions() {
@@ -136,7 +150,9 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 
 //destructor
 Studio::~Studio() {
-    trainers.clear();
+    for (Trainer *t: trainers) {
+        delete t;
+    }
     actionsLog.clear();
 }
 

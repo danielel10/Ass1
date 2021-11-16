@@ -1,6 +1,6 @@
 #include "../include/Action.h"
 #include "../include/Studio.h"
-extern Studio backup;
+extern Studio* backup;
 
 BaseAction::BaseAction() {
 
@@ -277,8 +277,20 @@ std::string PrintActionsLog::toString() const {
 
 BackupStudio::BackupStudio() {}
 
+//TODO - need to "s"
 void BackupStudio::act(Studio &studio) {
-    backup = studio;
+    Studio *s;
+    backup->setStatus();
+    //TODO - this does not work
+    for (Trainer *t: studio.getTrainers()) {
+        backup->getTrainers().push_back(new Trainer(*t));
+    }
+    for (Workout w: studio.getWorkoutOptions()) {
+        backup->getWorkoutOptions().push_back(w);
+    }
+    for (BaseAction *b: studio.getActionsLog()) {
+        backup->add_action_to_log(b);
+    }
     complete();
 }
 
@@ -289,8 +301,8 @@ std::string BackupStudio::toString() const {
 RestoreStudio::RestoreStudio() {}
 
 void RestoreStudio::act(Studio &studio) {
-    if(backup.get_status()) {
-        studio = backup;
+    if(backup->get_status()) {
+        studio = *backup;
         complete();
     }
     else {

@@ -23,10 +23,12 @@ public:
     void close_studio();
     void start();
     int getNumOfTrainers() const;
+    vector<Trainer*>& getTrainers();
     Trainer* getTrainer(int tid);
     void add_action_to_log(BaseAction* toadd);
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
+    void setStatus();
     ~Studio();
     Studio(const Studio &other);
     Studio(Studio &&other);
