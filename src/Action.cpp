@@ -277,20 +277,10 @@ std::string PrintActionsLog::toString() const {
 
 BackupStudio::BackupStudio() {}
 
-//TODO - need to "s"
+//TODO - need to remove "s"
 void BackupStudio::act(Studio &studio) {
-    Studio *s;
-    backup->setStatus();
-    //TODO - this does not work
-    for (Trainer *t: studio.getTrainers()) {
-        backup->getTrainers().push_back(new Trainer(*t));
-    }
-    for (Workout w: studio.getWorkoutOptions()) {
-        backup->getWorkoutOptions().push_back(w);
-    }
-    for (BaseAction *b: studio.getActionsLog()) {
-        backup->add_action_to_log(b);
-    }
+    Studio bu = studio;
+    backup = &bu;
     complete();
 }
 
