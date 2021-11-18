@@ -5,11 +5,10 @@
 
 using namespace std;
 
-Studio::Studio() {
-    open;
-    trainers;
-    workout_options;
-    actionsLog;
+Studio::Studio(): workout_options(){
+    open = true;
+    trainers.push_back(nullptr);
+    actionsLog.push_back(nullptr);
 }
 
 Studio::Studio(const std::string &configFilePath) {
@@ -152,8 +151,15 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 Studio::~Studio() {
     for (Trainer *t: trainers) {
         delete t;
+        t = nullptr;
+    }
+    trainers.clear();
+    for (BaseAction *b: actionsLog) {
+        delete b;
+        b = nullptr;
     }
     actionsLog.clear();
+    workout_options.clear();
 }
 
 //copy constructor

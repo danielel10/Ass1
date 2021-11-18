@@ -97,8 +97,11 @@ std::string Trainer::get_status() {
 
 //destructor
 Trainer::~Trainer() {
-    if(!customersList.empty())
-        customersList.clear();
+    for (Customer *c: customersList) {
+        delete c;
+        c = nullptr;
+    }
+    customersList.clear();
 }
 
 //copy constructor

@@ -29,6 +29,7 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainer
     for (int i = 0; i < customersList.size(); ++i) {
         customers.push_back(customersList[i]);
     }
+    customersList.clear();
 }
 
 //this is where we preform the action
@@ -277,10 +278,9 @@ std::string PrintActionsLog::toString() const {
 
 BackupStudio::BackupStudio() {}
 
-//TODO - need to remove "s"
 void BackupStudio::act(Studio &studio) {
-    Studio bu = studio;
-    backup = &bu;
+    backup = new Studio();
+    *backup = studio;
     complete();
 }
 
@@ -294,6 +294,8 @@ void RestoreStudio::act(Studio &studio) {
     if(backup->get_status()) {
         studio = *backup;
         complete();
+        delete backup;
+        backup = nullptr;
     }
     else {
         cout << "No backup available";

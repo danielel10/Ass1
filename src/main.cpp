@@ -67,6 +67,7 @@ int main(int argc, char** argv){
             //run the action
             open_trainer->act(studio);
             studio.add_action_to_log(open_trainer);
+
         }
         //"order" action
         else if (action == "order") {
@@ -153,6 +154,7 @@ int main(int argc, char** argv){
             RestoreStudio *r = new RestoreStudio();
             r->act(studio);
         }
+
     }
 
     /*
