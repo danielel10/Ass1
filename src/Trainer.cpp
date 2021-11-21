@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <utility>
 
-Trainer::Trainer(int t_capacity):capacity(t_capacity){}
+Trainer::Trainer(int t_capacity):capacity(t_capacity),open(false),salary(0),curr_salary(0){}
 
 int Trainer::getCapacity() const{
     return capacity;
@@ -66,7 +66,7 @@ int Trainer::getCurrSalary() {
 }
 
 bool Trainer::isOpen() {
-    if(open == true)
+    if(open)
         return true;
     else
         return false;

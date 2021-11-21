@@ -24,6 +24,7 @@ int main(int argc, char** argv){
 
     // while we dont have close all action we dont close the program
     string msg;
+    int id = 0;
     while (studio.get_status()) {
         getline(cin,msg); //here we get the action and the details if needed
         string action = msg.substr(0,msg.find(" ")); // get the first word of the action to know what we need to do.
@@ -38,7 +39,6 @@ int main(int argc, char** argv){
                 curr_action.push_back(substr);
             }
             int trainer_id = stoi(curr_action[1]);
-            int id;
             vector<Customer *> curr_cus;
             //we create the customers
             for (int i = 2; i < curr_action.size() ; ++i) {

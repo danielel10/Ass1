@@ -2,7 +2,7 @@
 #include "../include/Studio.h"
 extern Studio* backup;
 
-BaseAction::BaseAction() {
+BaseAction::BaseAction(){
 
 }
 
@@ -24,13 +24,18 @@ std::string BaseAction::getErrorMsg() const {
     return errorMsg;
 }
 
+
+
 //here we just initail the action and later check if it is legal
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainerId(id) {
     for (int i = 0; i < customersList.size(); ++i) {
         customers.push_back(customersList[i]);
     }
-    customersList.clear();
 }
+
+//std::string OpenTrainer::getName() {
+//    return name;
+//}
 
 //this is where we preform the action
 void OpenTrainer::act(Studio &studio) {
@@ -65,6 +70,7 @@ std::string OpenTrainer::toString() const {
 }
 //here we just initail the action and later check if it is legal
 Order::Order(int id): trainerId(id){}
+
 
 //this is where we preform the action
 void Order::act(Studio &studio) {
@@ -109,6 +115,7 @@ std::string Order::toString() const {
 
 //here we just initail the action and later check if it is legal
 MoveCustomer::MoveCustomer(int src, int dst, int customerId):srcTrainer(src), dstTrainer(dst), id(customerId) {}
+
 
 //this is where we preform the action
 void MoveCustomer::act(Studio &studio) {
@@ -165,6 +172,7 @@ std::string MoveCustomer::toString() const {
 
 Close::Close(int id): trainerId(id) {}
 
+
 void Close::act(Studio &studio) {
     if (trainerId > studio.getNumOfTrainers() || !studio.getTrainer(trainerId)->isOpen()) {
         cout << "Trainer does not exist or is not open" << endl;
@@ -175,9 +183,15 @@ void Close::act(Studio &studio) {
         studio.getTrainer(trainerId)->setCurrSalary(0);
         int salary = studio.getTrainer(trainerId)->getTotalSalary();
         studio.getTrainer(trainerId)->getOrders().clear();
-        studio.getTrainer(trainerId)->getCustomers().clear();
         studio.getTrainer(trainerId)->closeTrainer();
         cout << "Trainer " + to_string((trainerId)) + " closed. " + "Salary " + to_string(salary) + "NIS" + "\n";
+        for (Customer *c: studio.getTrainer(trainerId)->getCustomers()) {
+            if(c) {
+                delete c;
+            }
+            c = nullptr;
+        }
+        studio.getTrainer(trainerId)->getCustomers().clear();
         complete();
     }
 
@@ -196,7 +210,8 @@ std::string Close::toString() const {
     }
 }
 
-CloseAll::CloseAll() {}
+CloseAll::CloseAll(){}
+
 
 void CloseAll::act(Studio &studio) {
     for (int trainerId = 0; trainerId < studio.getNumOfTrainers(); ++trainerId) {
@@ -217,6 +232,7 @@ std::string CloseAll::toString() const {
 
 PrintWorkoutOptions::PrintWorkoutOptions() {}
 
+
 void PrintWorkoutOptions::act(Studio &studio) {
     for (int i = 0; i < studio.getWorkoutOptions().size(); ++i) {
         cout << studio.getWorkoutOptions()[i].getName() + ", " + to_string(studio.getWorkoutOptions()[i].getType()) +  ", "
@@ -231,6 +247,7 @@ std::string PrintWorkoutOptions::toString() const {
 
 
 PrintTrainerStatus::PrintTrainerStatus(int id):trainerId(id) {}
+
 
 void PrintTrainerStatus::act(Studio &studio) {
     if (!studio.getTrainer(trainerId)->isOpen()) {
@@ -265,6 +282,7 @@ std::string PrintTrainerStatus::toString() const {
 
 PrintActionsLog::PrintActionsLog() {}
 
+
 void PrintActionsLog::act(Studio &studio) {
     for (int i = 0; i < studio.getActionsLog().size(); ++i) {
         cout << studio.getActionsLog()[i]->toString() + "\n";
@@ -278,6 +296,7 @@ std::string PrintActionsLog::toString() const {
 
 BackupStudio::BackupStudio() {}
 
+
 void BackupStudio::act(Studio &studio) {
     backup = new Studio();
     *backup = studio;
@@ -289,6 +308,7 @@ std::string BackupStudio::toString() const {
 }
 
 RestoreStudio::RestoreStudio() {}
+
 
 void RestoreStudio::act(Studio &studio) {
     if(backup->get_status()) {
