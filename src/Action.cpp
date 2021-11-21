@@ -31,6 +31,7 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainer
     for (int i = 0; i < customersList.size(); ++i) {
         customers.push_back(customersList[i]);
     }
+
 }
 
 //std::string OpenTrainer::getName() {
@@ -50,6 +51,7 @@ void OpenTrainer::act(Studio &studio) {
         }
         complete();
     }
+    customers.clear();
 }
 
 
@@ -235,8 +237,19 @@ PrintWorkoutOptions::PrintWorkoutOptions() {}
 
 void PrintWorkoutOptions::act(Studio &studio) {
     for (int i = 0; i < studio.getWorkoutOptions().size(); ++i) {
-        cout << studio.getWorkoutOptions()[i].getName() + ", " + to_string(studio.getWorkoutOptions()[i].getType()) +  ", "
-        + to_string(studio.getWorkoutOptions()[i].getPrice()) + "\n";
+        if (studio.getWorkoutOptions()[i].getType() == ANAEROBIC) {
+            cout << studio.getWorkoutOptions()[i].getName() + ", " + "Anaerobic" +  ", "
+                    + to_string(studio.getWorkoutOptions()[i].getPrice()) + "\n";
+        }
+        else if (studio.getWorkoutOptions()[i].getType() == MIXED) {
+            cout << studio.getWorkoutOptions()[i].getName() + ", " + "Mixed" +  ", "
+                    + to_string(studio.getWorkoutOptions()[i].getPrice()) + "\n";
+        }
+        else {
+            cout << studio.getWorkoutOptions()[i].getName() + ", " + "Cardio" +  ", "
+                    + to_string(studio.getWorkoutOptions()[i].getPrice()) + "\n";
+        }
+
     }
     complete();
 }

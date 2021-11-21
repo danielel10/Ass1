@@ -150,14 +150,9 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 //destructor
 Studio::~Studio() {
     for (BaseAction *b: actionsLog) {
-        string action = b->toString().substr(0,4);
-        if (action == "open") {
             delete dynamic_cast<OpenTrainer*>(b);
-        }
-        else {
             delete b;
             b = nullptr;
-        }
     }
     for (Trainer *t: trainers) {
         delete t;
