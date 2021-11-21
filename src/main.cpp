@@ -9,10 +9,10 @@ Studio* backup = nullptr;
 
 
 int main(int argc, char** argv){
-//    if(argc!=2){
-//        std::cout << "usage: studio <config_path>" << std::endl;
-//        return 0;
-//    }
+    if(argc!=2){
+        std::cout << "usage: studio <config_path>" << std::endl;
+        return 0;
+    }
     string configurationFile = argv[1];
     Studio studio(configurationFile);
     studio.start();
@@ -157,12 +157,16 @@ int main(int argc, char** argv){
 
     }
 
-    /*
-    studio.start();
     if(backup!=nullptr){
     	delete backup;
     	backup = nullptr;
     }
-     */
+
+//    for(int i=0;i<argc;i++)
+//        delete argv[i];
+//    delete[] argv;
+//    configurationFile = nullptr;
+//    delete[] argv;
+//    argv = nullptr;
     return 0;
 }
