@@ -30,12 +30,12 @@ private:
 
 class OpenTrainer : public BaseAction {
 public:
-//    std::string getName();
+    int getids();
+    OpenTrainer(std::string none, int id);
     OpenTrainer(int id, std::vector<Customer *> &customersList);
     void act(Studio &studio);
     std::string toString() const;
 private:
-//    std::string name;
 	const int trainerId;
 	std::vector<Customer *> customers;
 };
@@ -43,24 +43,24 @@ private:
 
 class Order : public BaseAction {
 public:
+    int getids();
+    Order(std::string none, int id);
     Order(int id);
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
 private:
-//    std::string name;
     const int trainerId;
 };
 
 
 class MoveCustomer : public BaseAction {
 public:
+    std::vector<int> getids();
+    MoveCustomer(std::string none, int src,int dst, int id);
     MoveCustomer(int src, int dst, int customerId);
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
 private:
-//    std::string name;
     const int srcTrainer;
     const int dstTrainer;
     const int id;
@@ -69,12 +69,13 @@ private:
 
 class Close : public BaseAction {
 public:
+    int getids();
+    Close(std::string none, int id);
+    Close();
     Close(int id);
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
 private:
-//    std::string name;
     const int trainerId;
 };
 
@@ -82,68 +83,57 @@ private:
 class CloseAll : public BaseAction {
 public:
     CloseAll();
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
-//private:
-//    std::string name;
 };
 
 
 class PrintWorkoutOptions : public BaseAction {
 public:
+    PrintWorkoutOptions(std::string none);
     PrintWorkoutOptions();
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
-//private:
-//    std::string name;
 };
 
 
 class PrintTrainerStatus : public BaseAction {
 public:
+    PrintTrainerStatus(std::string none);
     PrintTrainerStatus(int id);
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
 private:
-//    std::string name;
     const int trainerId;
 };
 
 
 class PrintActionsLog : public BaseAction {
 public:
+    PrintActionsLog(std::string none);
     PrintActionsLog();
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
-//private:
-//    std::string name;
 };
 
 
 class BackupStudio : public BaseAction {
 public:
+    BackupStudio(std::string none);
     BackupStudio();
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
-//private:
-//    std::string name;
 };
 
 
 class RestoreStudio : public BaseAction {
 public:
+    RestoreStudio(std::string none);
     RestoreStudio();
-//    std::string getName();
     void act(Studio &studio);
     std::string toString() const;
 
 private:
-//    std::string name;
 
 };
 

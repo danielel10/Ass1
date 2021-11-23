@@ -3,7 +3,6 @@
 extern Studio* backup;
 
 BaseAction::BaseAction(){
-
 }
 
 ActionStatus BaseAction::getStatus() const {
@@ -24,7 +23,61 @@ std::string BaseAction::getErrorMsg() const {
     return errorMsg;
 }
 
+OpenTrainer::OpenTrainer(std::string none,int id):trainerId(id) {
+    complete();
+}
 
+Order::Order(std::string none, int id):trainerId(id) {
+    complete();
+}
+
+MoveCustomer::MoveCustomer(std::string none, int src,int dst, int id):srcTrainer(src),dstTrainer(dst),id(id) {
+    complete();
+}
+
+Close::Close(std::string none, int id):trainerId(id) {
+    complete();
+}
+
+PrintWorkoutOptions::PrintWorkoutOptions(std::string none) {
+    complete();
+}
+
+PrintTrainerStatus::PrintTrainerStatus(std::string none):trainerId(0) {
+    complete();
+}
+
+PrintActionsLog::PrintActionsLog(std::string none) {
+    complete();
+}
+
+BackupStudio::BackupStudio(std::string none) {
+    complete();
+}
+
+RestoreStudio::RestoreStudio(std::string none) {
+    complete();
+}
+
+int OpenTrainer::getids() {
+    return trainerId;
+}
+
+int Order::getids() {
+    return trainerId;
+}
+
+std::vector<int> MoveCustomer::getids() {
+    vector<int> tmp;
+    tmp.push_back(srcTrainer);
+    tmp.push_back(dstTrainer);
+    tmp.push_back(id);
+    return tmp;
+}
+
+int Close::getids() {
+    return trainerId;
+}
 
 //here we just initail the action and later check if it is legal
 OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainerId(id) {
@@ -34,24 +87,26 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainer
 
 }
 
-//std::string OpenTrainer::getName() {
-//    return name;
-//}
 
 //this is where we preform the action
 void OpenTrainer::act(Studio &studio) {
     if(trainerId > studio.getNumOfTrainers() || studio.getTrainer(trainerId)->isOpen()) {
         cout << "Workout session does not exist or is already open." << endl;
         error("Workout session does not exist or is already open.");
+        for (int i = 0; i < customers.size(); ++i) {
+            delete customers[i];
+            customers[i] = nullptr;
+        }
+        customers.clear();
     }
     else {
         studio.getTrainer(trainerId)->openTrainer();
         for (int i = 0; i < customers.size(); ++i) {
             studio.getTrainer(trainerId)->addCustomer(customers[i]);
         }
+        customers.clear();
         complete();
     }
-    customers.clear();
 }
 
 
@@ -70,6 +125,7 @@ std::string OpenTrainer::toString() const {
         return msg;
     }
 }
+
 //here we just initail the action and later check if it is legal
 Order::Order(int id): trainerId(id){}
 
@@ -311,6 +367,8 @@ BackupStudio::BackupStudio() {}
 
 
 void BackupStudio::act(Studio &studio) {
+    if (backup)
+        delete backup;
     backup = new Studio();
     *backup = studio;
     complete();
@@ -327,8 +385,6 @@ void RestoreStudio::act(Studio &studio) {
     if(backup->get_status()) {
         studio = *backup;
         complete();
-        delete backup;
-        backup = nullptr;
     }
     else {
         cout << "No backup available";

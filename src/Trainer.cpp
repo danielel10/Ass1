@@ -9,8 +9,14 @@ int Trainer::getCapacity() const{
 }
 
 void Trainer::addCustomer(Customer *customer) {
+    if(capacity > 0) {
         customersList.push_back(customer);
         capacity--;
+    }
+    else {
+        delete customer;
+        customer = nullptr;
+    }
 }
 void Trainer::removeCustomer(int id) {
     for (int i = 0; i < customersList.size(); ++i) {
@@ -97,9 +103,9 @@ std::string Trainer::get_status() {
 
 //destructor
 Trainer::~Trainer() {
-    for (Customer *c: customersList) {
-        delete c;
-        c = nullptr;
+    for (int i = 0; i < customersList.size(); ++i) {
+        delete customersList[i];
+        customersList[i] = nullptr;
     }
     customersList.clear();
 }
@@ -110,7 +116,15 @@ Trainer::Trainer(const Trainer &other):salary(other.salary), capacity(other.capa
         orderList.push_back(p);
     }
     for (Customer *c: other.customersList) {
-        customersList.push_back(c);
+        if (c->toString().back() =='t' )
+            customersList.push_back(new SweatyCustomer(c->getName(),c->getId()));
+        if (c->toString().back() =='p' )
+            customersList.push_back(new CheapCustomer(c->getName(),c->getId()));
+        if (c->toString().back() =='l' )
+            customersList.push_back(new HeavyMuscleCustomer(c->getName(),c->getId()));
+        if (c->toString().back() =='d' )
+            customersList.push_back(new FullBodyCustomer(c->getName(),c->getId()));
+
     }
 }
 //move constructor

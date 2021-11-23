@@ -2,6 +2,7 @@
 #include "../include/Studio.h"
 #include "../include/Workout.h"
 #include "../include/Action.h"
+#include    <iterator>
 
 using namespace std;
 
@@ -82,7 +83,8 @@ Studio::Studio(const std::string &configFilePath) {
                         type = WorkoutType::CARDIO;
                     }
                     int price = stoi(sprice);
-                    workout_options.push_back(Workout(Workout_id,name,price,type));
+                    Workout w = Workout(Workout_id,name,price,type);
+                    workout_options.push_back(w);
                     Workout_id++;
                 }
             }
@@ -96,7 +98,6 @@ Studio::Studio(const std::string &configFilePath) {
             }
 
         }
-
 
     }
 
@@ -149,17 +150,19 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 
 //destructor
 Studio::~Studio() {
-    for (Trainer *t: trainers) {
-        delete t;
-        t = nullptr;
+    for (int i = 0; i < trainers.size(); ++i) {
+        delete trainers[i];
+        trainers[i] = nullptr;
     }
-    for (BaseAction *b: actionsLog) {
-        if(b->toString().substr(0,4) == "open")
-            delete dynamic_cast<OpenTrainer*>(b);
-        else
-            delete b;
+    for (int i = 0; i <actionsLog.size() ; ++i) {
+        if (actionsLog[i]) {
+            if(actionsLog[i]->toString().substr(0,4) == "open")
+                delete dynamic_cast<OpenTrainer*>(actionsLog[i]);
+            else
+                delete actionsLog[i];
 
-        b = nullptr;
+            actionsLog[i] = nullptr;
+        }
     }
     trainers.clear();
     actionsLog.clear();
@@ -172,7 +175,32 @@ Studio::Studio(const Studio &other):open(other.open), workout_options(other.work
         trainers.push_back(new Trainer(*t));
     }
     for (BaseAction *log : other.actionsLog) {
-        actionsLog.push_back(log);
+        if (log->toString().substr(0,4) == "open")
+            actionsLog.push_back(new OpenTrainer("",dynamic_cast<OpenTrainer*>(log)->getids()));
+        if (log->toString().substr(0,4) == "orde")
+            actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
+        if (log->toString().substr(0,4) == "move") {
+            vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
+            if(tmp.size() == 3) {
+                int src = tmp[0];
+                int dst = tmp[1];
+                int id = tmp[2];
+                actionsLog.push_back(new MoveCustomer("",src,dst,id));
+            }
+        }
+        if (log->toString().substr(0,4) == "clos")
+            actionsLog.push_back(new Close("",dynamic_cast<Close*>(log)->getids()));
+        if (log->toString().substr(0,4) == "work")
+            actionsLog.push_back(new PrintWorkoutOptions(""));
+        if (log->toString().substr(0,4) == "stat")
+            actionsLog.push_back(new PrintTrainerStatus(""));
+        if (log->toString().substr(0,4) == "log ")
+            actionsLog.push_back(new PrintActionsLog(""));
+        if (log->toString().substr(0,4) == "back")
+            actionsLog.push_back(new BackupStudio(""));
+        if (log->toString().substr(0,4) == "rest")
+            actionsLog.push_back(new RestoreStudio(""));
+
     }
 }
 
@@ -186,7 +214,32 @@ Studio::Studio(Studio &&other) {
         trainers.push_back(new Trainer(*t));
     }
     for (BaseAction *log : other.actionsLog) {
-        actionsLog.push_back(log);
+        if (log->toString().substr(0,4) == "open")
+            actionsLog.push_back(new OpenTrainer("",dynamic_cast<OpenTrainer*>(log)->getids()));
+        if (log->toString().substr(0,4) == "orde")
+            actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
+        if (log->toString().substr(0,4) == "move") {
+            vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
+            if(tmp.size() == 3) {
+                int src = tmp[0];
+                int dst = tmp[1];
+                int id = tmp[2];
+                actionsLog.push_back(new MoveCustomer("",src,dst,id));
+            }
+        }
+        if (log->toString().substr(0,4) == "clos")
+            actionsLog.push_back(new Close("",dynamic_cast<Close*>(log)->getids()));
+        if (log->toString().substr(0,4) == "work")
+            actionsLog.push_back(new PrintWorkoutOptions(""));
+        if (log->toString().substr(0,4) == "stat")
+            actionsLog.push_back(new PrintTrainerStatus(""));
+        if (log->toString().substr(0,4) == "log ")
+            actionsLog.push_back(new PrintActionsLog(""));
+        if (log->toString().substr(0,4) == "back")
+            actionsLog.push_back(new BackupStudio(""));
+        if (log->toString().substr(0,4) == "rest")
+            actionsLog.push_back(new RestoreStudio(""));
+
     }
 }
 
@@ -196,13 +249,42 @@ Studio &Studio::operator=(const Studio &other) {
         clear();
         open = other.open;
         for (Workout w: other.workout_options) {
-            workout_options.push_back(w);
+            int id = w.getId();
+            int price = w.getPrice();
+            WorkoutType a = w.getType();
+            string name = w.getName();
+            workout_options.push_back(Workout(id,name,price,a));
         }
         for (Trainer *t: other.trainers) {
             trainers.push_back(new Trainer(*t));
         }
         for (BaseAction *log : other.actionsLog) {
-            actionsLog.push_back(log);
+            if (log->toString().substr(0,4) == "open")
+                actionsLog.push_back(new OpenTrainer("",dynamic_cast<OpenTrainer*>(log)->getids()));
+            if (log->toString().substr(0,4) == "orde")
+                actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
+            if (log->toString().substr(0,4) == "move") {
+                vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
+                if(tmp.size() == 3) {
+                    int src = tmp[0];
+                    int dst = tmp[1];
+                    int id = tmp[2];
+                    actionsLog.push_back(new MoveCustomer("",src,dst,id));
+                }
+            }
+            if (log->toString().substr(0,4) == "clos")
+                actionsLog.push_back(new Close("",dynamic_cast<Close*>(log)->getids()));
+            if (log->toString().substr(0,4) == "work")
+                actionsLog.push_back(new PrintWorkoutOptions(""));
+            if (log->toString().substr(0,4) == "stat")
+                actionsLog.push_back(new PrintTrainerStatus(""));
+            if (log->toString().substr(0,4) == "log ")
+                actionsLog.push_back(new PrintActionsLog(""));
+            if (log->toString().substr(0,4) == "back")
+                actionsLog.push_back(new BackupStudio(""));
+            if (log->toString().substr(0,4) == "rest")
+                actionsLog.push_back(new RestoreStudio(""));
+
         }
 
     }
@@ -215,13 +297,42 @@ Studio &Studio::operator=(Studio &&other) {
         clear();
         open = other.open;
         for (Workout w: other.workout_options) {
-            workout_options.push_back(w);
+            int id = w.getId();
+            int price = w.getPrice();
+            WorkoutType a = w.getType();
+            string name = w.getName();
+            workout_options.push_back(Workout(id,name,price,a));
         }
         for (Trainer *t: other.trainers) {
             trainers.push_back(new Trainer(*t));
         }
         for (BaseAction *log : other.actionsLog) {
-            actionsLog.push_back(log);
+            if (log->toString().substr(0,4) == "open")
+                actionsLog.push_back(new OpenTrainer("",dynamic_cast<OpenTrainer*>(log)->getids()));
+            if (log->toString().substr(0,4) == "orde")
+                actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
+            if (log->toString().substr(0,4) == "move") {
+                vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
+                if(tmp.size() == 3) {
+                    int src = tmp[0];
+                    int dst = tmp[1];
+                    int id = tmp[2];
+                    actionsLog.push_back(new MoveCustomer("",src,dst,id));
+                }
+            }
+            if (log->toString().substr(0,4) == "clos")
+                actionsLog.push_back(new Close("",dynamic_cast<Close*>(log)->getids()));
+            if (log->toString().substr(0,4) == "work")
+                actionsLog.push_back(new PrintWorkoutOptions(""));
+            if (log->toString().substr(0,4) == "stat")
+                actionsLog.push_back(new PrintTrainerStatus(""));
+            if (log->toString().substr(0,4) == "log ")
+                actionsLog.push_back(new PrintActionsLog(""));
+            if (log->toString().substr(0,4) == "back")
+                actionsLog.push_back(new BackupStudio(""));
+            if (log->toString().substr(0,4) == "rest")
+                actionsLog.push_back(new RestoreStudio(""));
+
         }
         other.trainers.clear();
         other.actionsLog.clear();
@@ -230,6 +341,20 @@ Studio &Studio::operator=(Studio &&other) {
 }
 
 void Studio::clear() {
+    for (int i = 0; i < trainers.size(); ++i) {
+        delete trainers[i];
+        trainers[i] = nullptr;
+    }
+    for (int i = 0; i <actionsLog.size() ; ++i) {
+        if (actionsLog[i]) {
+            if(actionsLog[i]->toString().substr(0,4) == "open")
+                delete dynamic_cast<OpenTrainer*>(actionsLog[i]);
+            else
+                delete actionsLog[i];
+
+            actionsLog[i] = nullptr;
+        }
+    }
     workout_options.clear();
     trainers.clear();
     actionsLog.clear();

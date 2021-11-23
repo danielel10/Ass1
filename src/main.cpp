@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Studio* backup = nullptr;
+Studio *backup = nullptr;
 
 
 
@@ -14,8 +14,9 @@ int main(int argc, char** argv){
         return 0;
     }
     string configurationFile = argv[1];
-    Studio studio(configurationFile);
-    studio.start();
+//    Studio studio(configurationFile);
+    Studio *studio = new Studio(configurationFile);
+    studio->start();
     //here will be the while loop untill msg = "close all"
     // - msg = string that goes in
     //if first word is "action_name" than do the action
@@ -25,7 +26,7 @@ int main(int argc, char** argv){
     // while we dont have close all action we dont close the program
     string msg;
     int id = 0;
-    while (studio.get_status()) {
+    while (studio->get_status()) {
         getline(cin,msg); //here we get the action and the details if needed
         string action = msg.substr(0,msg.find(" ")); // get the first word of the action to know what we need to do.
         //"open trainer" action
@@ -62,11 +63,11 @@ int main(int argc, char** argv){
                 }
                 id ++;
             }
-            //create the open order constructor
-            OpenTrainer *open_trainer = new OpenTrainer(trainer_id,curr_cus);
-            //run the action
-            open_trainer->act(studio);
-            studio.add_action_to_log(open_trainer);
+                //create the open order constructor
+                OpenTrainer *open_trainer = new OpenTrainer(trainer_id,curr_cus);
+                //run the action
+                open_trainer->act(*studio);
+                studio->add_action_to_log(open_trainer);
 
         }
         //"order" action
@@ -81,8 +82,8 @@ int main(int argc, char** argv){
             }
             int trainer_id = stoi(curr_action[1]);
             Order *ordernew = new Order(trainer_id);
-            ordernew->act(studio);
-            studio.add_action_to_log(ordernew);
+            ordernew->act(*studio);
+            studio->add_action_to_log(ordernew);
         }
         //"move" action
         else if (action == "move") {
@@ -98,8 +99,8 @@ int main(int argc, char** argv){
             int trainer_dst = stoi(curr_action[2]);
             int customer_id = stoi(curr_action[3]);
             MoveCustomer *moveCustomer = new MoveCustomer(trainer_src,trainer_dst,customer_id);
-            moveCustomer->act(studio);
-            studio.add_action_to_log(moveCustomer);
+            moveCustomer->act(*studio);
+            studio->add_action_to_log(moveCustomer);
         }
         else if (action == "close") {
             //get the trainer details and customer from the string
@@ -112,19 +113,19 @@ int main(int argc, char** argv){
             }
             int trainer_id = stoi(curr_action[1]);
             Close *close = new Close(trainer_id);
-            close->act(studio);
-            studio.add_action_to_log(close);
+            close->act(*studio);
+            studio->add_action_to_log(close);
         }
         else if (action == "closeall") {
             CloseAll *close = new CloseAll();
-            close->act(studio);
-            studio.add_action_to_log(close);
-            studio.close_studio();
+            close->act(*studio);
+            studio->close_studio();
+            delete close;
         }
         else if (action == "workout_options") {
             PrintWorkoutOptions *workoutOptions = new PrintWorkoutOptions();
-            workoutOptions->act(studio);
-            studio.add_action_to_log(workoutOptions);
+            workoutOptions->act(*studio);
+            studio->add_action_to_log(workoutOptions);
         }
         else if (action == "status") {
             //get the trainer details and customer from the string
@@ -137,22 +138,23 @@ int main(int argc, char** argv){
             }
             int trainer_id = stoi(curr_action[1]);
             PrintTrainerStatus *status = new PrintTrainerStatus(trainer_id);
-            status->act(studio);
-            studio.add_action_to_log(status);
+            status->act(*studio);
+            studio->add_action_to_log(status);
         }
         else if (action == "log") {
             PrintActionsLog *log = new PrintActionsLog();
-            log->act(studio);
-            studio.add_action_to_log(log);
+            log->act(*studio);
+            studio->add_action_to_log(log);
         }
         else if (action == "backup") {
             BackupStudio *back = new BackupStudio();
-            back->act(studio);
-            studio.add_action_to_log(back);
+            studio->add_action_to_log(back);
+            back->act(*studio);
         }
         else if (action == "restore") {
             RestoreStudio *r = new RestoreStudio();
-            r->act(studio);
+            r->act(*studio);
+            delete r;
         }
 
     }
@@ -161,6 +163,10 @@ int main(int argc, char** argv){
     	delete backup;
     	backup = nullptr;
     }
+    delete studio;
+    studio = nullptr;
+
+
 
 //    for(int i=0;i<argc;i++)
 //        delete argv[i];
