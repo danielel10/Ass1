@@ -186,3 +186,4 @@ void Trainer::clear() {
     orderList.clear();
     customersList.clear();
 }
+

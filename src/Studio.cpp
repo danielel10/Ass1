@@ -12,6 +12,7 @@ Studio::Studio(): workout_options(){
     actionsLog.push_back(nullptr);
 }
 
+
 Studio::Studio(const std::string &configFilePath) {
     //here we define the list of trainers and list of workouts plains
     fstream newfile;

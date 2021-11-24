@@ -20,7 +20,7 @@ WorkoutType Workout::getType() const {
 }
 
 
-
+Workout::~Workout() {}
 
 
 

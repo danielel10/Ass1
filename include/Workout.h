@@ -9,6 +9,7 @@ enum WorkoutType{
 
 class Workout{
 public:
+    virtual ~Workout();
     Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type);
     int getId() const;
     std::string getName() const;

@@ -14,6 +14,7 @@ class Studio;
 
 class BaseAction{
 public:
+    virtual ~BaseAction();
     BaseAction();
     ActionStatus getStatus() const;
     virtual void act(Studio& studio)=0;

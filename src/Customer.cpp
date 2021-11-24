@@ -228,6 +228,6 @@ std::string FullBodyCustomer::toString() const {
 }
 
 
-
+Customer::~Customer() {}
 
 
