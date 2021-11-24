@@ -7,6 +7,7 @@
 
 class Customer{
 public:
+    virtual ~Customer();
     Customer(std::string c_name, int c_id);
     virtual std::vector<int> order(const std::vector<Workout> &workout_options)=0;
     virtual std::string toString() const = 0;
@@ -22,8 +23,6 @@ public:
 private:
     const std::string name;
     const int id;
-    //TODO - refactor trainer
-//    std::string workout_type;
 };
 
 

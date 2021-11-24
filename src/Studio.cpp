@@ -6,13 +6,11 @@
 
 using namespace std;
 
-Studio::Studio(): workout_options(){
-    open = true;
-    trainers.push_back(nullptr);
-    actionsLog.push_back(nullptr);
+Studio::Studio():open(), trainers(), workout_options(), actionsLog() {
 }
 
-Studio::Studio(const std::string &configFilePath) {
+
+Studio::Studio(const std::string &configFilePath):open(), trainers(), workout_options(), actionsLog() {
     //here we define the list of trainers and list of workouts plains
     fstream newfile;
     newfile.open(configFilePath,ios::in);
@@ -57,7 +55,7 @@ Studio::Studio(const std::string &configFilePath) {
                     string name;
                     string stype;
                     string sprice;
-                    for (int i = 0; i < curr_row.size(); i++) {
+                    for (int i = 0; i < static_cast<int>(curr_row.size()); i++) {
                         switch(i){
                             case 0:
                                 name = curr_row[i];
@@ -92,7 +90,7 @@ Studio::Studio(const std::string &configFilePath) {
             getline(newfile, tp);
 
             //exit file when done, AKA we finished with workout types
-            if(workout_options.size() > 0) {
+            if(static_cast<int>(workout_options.size()) > 0) {
                 newfile.close(); //close the file object.
                 break;
             }
@@ -123,7 +121,7 @@ void Studio::start() {
 }
 
 int Studio::getNumOfTrainers() const {
-    return  trainers.size();
+    return  static_cast<int>(trainers.size());
 }
 
 Trainer *Studio::getTrainer(int tid) {
@@ -150,11 +148,11 @@ const std::vector<BaseAction *> &Studio::getActionsLog() const {
 
 //destructor
 Studio::~Studio() {
-    for (int i = 0; i < trainers.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(trainers.size()); ++i) {
         delete trainers[i];
         trainers[i] = nullptr;
     }
-    for (int i = 0; i <actionsLog.size() ; ++i) {
+    for (int i = 0; i <static_cast<int>(actionsLog.size()) ; ++i) {
         if (actionsLog[i]) {
             if(actionsLog[i]->toString().substr(0,4) == "open")
                 delete dynamic_cast<OpenTrainer*>(actionsLog[i]);
@@ -170,7 +168,9 @@ Studio::~Studio() {
 }
 
 //copy constructor
-Studio::Studio(const Studio &other):open(other.open), workout_options(other.workout_options) {
+Studio::Studio(const Studio &other):open(other.open), trainers(other.trainers), workout_options(other.workout_options), actionsLog(other.actionsLog) {
+    trainers.clear();
+    actionsLog.clear();
     for (Trainer *t: other.trainers) {
         trainers.push_back(new Trainer(*t));
     }
@@ -181,7 +181,7 @@ Studio::Studio(const Studio &other):open(other.open), workout_options(other.work
             actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
         if (log->toString().substr(0,4) == "move") {
             vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
-            if(tmp.size() == 3) {
+            if(static_cast<int>(tmp.size()) == 3) {
                 int src = tmp[0];
                 int dst = tmp[1];
                 int id = tmp[2];
@@ -205,11 +205,9 @@ Studio::Studio(const Studio &other):open(other.open), workout_options(other.work
 }
 
 //move constructor
-Studio::Studio(Studio &&other) {
-    open = other.open;
-    for (Workout w: other.workout_options) {
-        workout_options.push_back(w);
-    }
+Studio::Studio(Studio &&other):open(other.open), trainers(other.trainers), workout_options(other.workout_options), actionsLog(other.actionsLog) {
+    trainers.clear();
+    actionsLog.clear();
     for (Trainer *t: other.trainers) {
         trainers.push_back(new Trainer(*t));
     }
@@ -220,7 +218,7 @@ Studio::Studio(Studio &&other) {
             actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
         if (log->toString().substr(0,4) == "move") {
             vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
-            if(tmp.size() == 3) {
+            if(static_cast<int>(tmp.size()) == 3) {
                 int src = tmp[0];
                 int dst = tmp[1];
                 int id = tmp[2];
@@ -265,7 +263,7 @@ Studio &Studio::operator=(const Studio &other) {
                 actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
             if (log->toString().substr(0,4) == "move") {
                 vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
-                if(tmp.size() == 3) {
+                if(static_cast<int>(tmp.size()) == 3) {
                     int src = tmp[0];
                     int dst = tmp[1];
                     int id = tmp[2];
@@ -313,7 +311,7 @@ Studio &Studio::operator=(Studio &&other) {
                 actionsLog.push_back(new Order("",dynamic_cast<Order*>(log)->getids()));
             if (log->toString().substr(0,4) == "move") {
                 vector<int> tmp = dynamic_cast<MoveCustomer*>(log)->getids();
-                if(tmp.size() == 3) {
+                if(static_cast<int>(tmp.size()) == 3) {
                     int src = tmp[0];
                     int dst = tmp[1];
                     int id = tmp[2];
@@ -341,11 +339,11 @@ Studio &Studio::operator=(Studio &&other) {
 }
 
 void Studio::clear() {
-    for (int i = 0; i < trainers.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(trainers.size()); ++i) {
         delete trainers[i];
         trainers[i] = nullptr;
     }
-    for (int i = 0; i <actionsLog.size() ; ++i) {
+    for (int i = 0; i <static_cast<int>(actionsLog.size()) ; ++i) {
         if (actionsLog[i]) {
             if(actionsLog[i]->toString().substr(0,4) == "open")
                 delete dynamic_cast<OpenTrainer*>(actionsLog[i]);

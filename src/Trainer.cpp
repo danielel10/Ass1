@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <utility>
 
-Trainer::Trainer(int t_capacity):capacity(t_capacity),open(false),salary(0),curr_salary(0){}
+Trainer::Trainer(int t_capacity):salary(0),curr_salary(0), capacity(t_capacity),open(false),customersList(),orderList(){}
 
 int Trainer::getCapacity() const{
     return capacity;
@@ -19,7 +19,7 @@ void Trainer::addCustomer(Customer *customer) {
     }
 }
 void Trainer::removeCustomer(int id) {
-    for (int i = 0; i < customersList.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(customersList.size()); ++i) {
         if (customersList[i]->getId() == id)
             customersList.erase(customersList.begin() + i);
     }
@@ -28,7 +28,7 @@ void Trainer::removeCustomer(int id) {
 }
 
 Customer *Trainer::getCustomer(int id) {
-    for (int i = 0; i < customersList.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(customersList.size()); ++i) {
         if(customersList[i]->getId() == id)
             return customersList[i];
     }
@@ -43,8 +43,8 @@ std::vector<Customer *> &Trainer::getCustomers() {
 
 
 void Trainer::order(const int customer_id, const std::vector<int> workout_ids, const std::vector<Workout> &workout_options) {
-    for (int i = 0; i < workout_ids.size(); ++i) {
-        for (int j = 0; j < workout_options.size(); ++j) {
+    for (int i = 0; i < static_cast<int>(workout_ids.size()); ++i) {
+        for (int j = 0; j < static_cast<int>(workout_options.size()); ++j) {
             if(workout_options[j].getId() == workout_ids[i] ) {
                 OrderPair trainer_order = std::make_pair(customer_id, workout_options[j]);
                 orderList.push_back(trainer_order);
@@ -103,7 +103,7 @@ std::string Trainer::get_status() {
 
 //destructor
 Trainer::~Trainer() {
-    for (int i = 0; i < customersList.size(); ++i) {
+    for (int i = 0; i < static_cast<int>(customersList.size()); ++i) {
         delete customersList[i];
         customersList[i] = nullptr;
     }
@@ -111,7 +111,9 @@ Trainer::~Trainer() {
 }
 
 //copy constructor
-Trainer::Trainer(const Trainer &other):salary(other.salary), capacity(other.capacity), open(other.open),curr_salary(other.curr_salary) {
+Trainer::Trainer(const Trainer &other):salary(other.salary), curr_salary(other.curr_salary),capacity(other.capacity),open(other.open), customersList(other.customersList), orderList(other.orderList) {
+    orderList.clear();
+    customersList.clear();
     for (OrderPair p: other.orderList) {
         orderList.push_back(p);
     }
@@ -128,19 +130,7 @@ Trainer::Trainer(const Trainer &other):salary(other.salary), capacity(other.capa
     }
 }
 //move constructor
-Trainer::Trainer(Trainer &&other) {
-    salary = other.salary;
-    capacity = other.capacity;
-    open = other.open;
-    curr_salary = other.curr_salary;
-    for (OrderPair p: other.orderList) {
-        orderList.push_back(p);
-    }
-    for (Customer *c: other.customersList) {
-        customersList.push_back(c);
-    }
-    other.customersList.clear();
-
+Trainer::Trainer(Trainer &&other):salary(other.salary), curr_salary(other.curr_salary),capacity(other.capacity),open(other.open),customersList(other.customersList), orderList(other.orderList) {
 }
 
 //copy assignment
@@ -186,3 +176,4 @@ void Trainer::clear() {
     orderList.clear();
     customersList.clear();
 }
+

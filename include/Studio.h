@@ -29,7 +29,7 @@ public:
 	const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
     void setStatus();
-    ~Studio();
+    virtual ~Studio();
     Studio(const Studio &other);
     Studio(Studio &&other);
     Studio& operator=(const Studio &other);
