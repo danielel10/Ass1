@@ -25,7 +25,7 @@ public:
     void setTotalSalary(int total);
     bool isOpen();
     std::string get_status();
-    ~Trainer();
+    virtual ~Trainer();
     Trainer(const Trainer &other);
     Trainer(Trainer &&other);
     Trainer& operator=(const Trainer &other);

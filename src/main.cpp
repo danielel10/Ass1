@@ -42,7 +42,7 @@ int main(int argc, char** argv){
             int trainer_id = stoi(curr_action[1]);
             vector<Customer *> curr_cus;
             //we create the customers
-            for (int i = 2; i < curr_action.size() ; ++i) {
+            for (int i = 2; i < static_cast<int>(curr_action.size()) ; ++i) {
                 string name = curr_action[i].substr(0, curr_action[i].find(","));
                 string workout = curr_action[i].substr((curr_action[i].find(","))+1);
                 if (workout == "swt"){

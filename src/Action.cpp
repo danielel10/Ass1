@@ -2,7 +2,7 @@
 #include "../include/Studio.h"
 extern Studio* backup;
 
-BaseAction::BaseAction(){
+BaseAction::BaseAction():errorMsg(),status(){
 }
 
 ActionStatus BaseAction::getStatus() const {
@@ -23,7 +23,7 @@ std::string BaseAction::getErrorMsg() const {
     return errorMsg;
 }
 
-OpenTrainer::OpenTrainer(std::string none,int id):trainerId(id) {
+OpenTrainer::OpenTrainer(std::string none,int id):trainerId(id),customers() {
     complete();
 }
 
@@ -80,11 +80,7 @@ int Close::getids() {
 }
 
 //here we just initail the action and later check if it is legal
-OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainerId(id) {
-    for (unsigned int i = 0; i < customersList.size(); ++i) {
-        customers.push_back(customersList[i]);
-    }
-
+OpenTrainer::OpenTrainer(int id, std::vector<Customer *> &customersList):trainerId(id), customers(customersList) {
 }
 
 
@@ -273,11 +269,12 @@ CloseAll::CloseAll(){}
 
 void CloseAll::act(Studio &studio) {
     for (int trainerId = 0; trainerId < studio.getNumOfTrainers(); ++trainerId) {
-
-        studio.getTrainer(trainerId)->setTotalSalary(studio.getTrainer(trainerId)->getTotalSalary() + studio.getTrainer(trainerId)->getCurrSalary());
-        studio.getTrainer(trainerId)->setCurrSalary(0);
-        int salary = studio.getTrainer(trainerId)->getTotalSalary();
-        cout << "Trainer " + to_string((trainerId)) + " closed. " + "Salary " + to_string(salary) + "NIS" + "\n";
+        if(studio.getTrainer(trainerId)->isOpen()) {
+            studio.getTrainer(trainerId)->setTotalSalary(studio.getTrainer(trainerId)->getTotalSalary() + studio.getTrainer(trainerId)->getCurrSalary());
+            studio.getTrainer(trainerId)->setCurrSalary(0);
+            int salary = studio.getTrainer(trainerId)->getTotalSalary();
+            cout << "Trainer " + to_string((trainerId)) + " closed. " + "Salary " + to_string(salary) + "NIS" + "\n";
+        }
 
     }
     cout << "Studio is now closed!";
@@ -403,4 +400,4 @@ std::string RestoreStudio::toString() const {
     return msg;
 }
 
-BaseAction::~BaseAction() noexcept {}
+BaseAction::~BaseAction(){}

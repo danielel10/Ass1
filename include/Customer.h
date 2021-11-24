@@ -23,8 +23,6 @@ public:
 private:
     const std::string name;
     const int id;
-    //TODO - refactor trainer
-//    std::string workout_type;
 };
 
 
